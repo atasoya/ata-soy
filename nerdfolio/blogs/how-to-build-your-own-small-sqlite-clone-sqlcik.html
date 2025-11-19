@@ -1,0 +1,427 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - Ata Atasoy</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../nerdfolio.css" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    width: 100%;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content p {
+    margin: 1rem 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 8px;
+    display: block;
+    background: none !important;
+  }
+
+  .blog-content code {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .blog-content pre {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .blog-content pre code {
+    word-break: normal;
+  }
+
+  .blog-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content a {
+    text-decoration: underline;
+  }
+
+  .blog-header {
+    text-align: center;
+    padding: 3rem 1rem 1rem;
+  }
+
+  .blog-header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .blog-header .site-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .blog-footer {
+    border-top: 1px solid currentColor;
+    opacity: 0.9;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .blog-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    .blog-container {
+      padding: 0 1rem 2rem;
+      max-width: 100%;
+    }
+
+    .blog-content {
+      font-size: 0.95rem;
+    }
+
+    .blog-content h1 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .blog-content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content img {
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .blog-content code {
+      font-size: 0.85em;
+      padding: 0.15rem 0.3rem;
+    }
+
+    .blog-content pre {
+      padding: 0.75rem;
+      margin: 1rem -1rem;
+      border-radius: 0;
+    }
+
+    .blog-content table {
+      font-size: 0.85rem;
+    }
+
+    .blog-header {
+      padding: 1.5rem 1rem 0.5rem;
+    }
+
+    .blog-header .site-name {
+      font-size: 0.75rem;
+    }
+
+    .blog-footer {
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // Prefetch links on hover for instant navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const prefetched = new Set();
+    
+    // Prefetch on hover
+    document.addEventListener('mouseover', function(e) {
+      const link = e.target.closest('a');
+      if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+      
+      // Only prefetch same-origin links
+      if (new URL(link.href).origin !== location.origin) return;
+      
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = link.href;
+      prefetchLink.as = 'document';
+      document.head.appendChild(prefetchLink);
+      prefetched.add(link.href);
+    });
+  });
+  
+  // Create and register service worker inline
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      const swCode = `
+        const CACHE_NAME = 'ata-soy-v1';
+        const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+        
+        self.addEventListener('install', function(event) {
+          event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+        });
+        
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request).then(function(response) {
+              if (response) return response;
+              return fetch(event.request).then(function(response) {
+                if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                  return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                return response;
+              });
+            })
+          );
+        });
+        
+        self.addEventListener('activate', function(event) {
+          const cacheWhitelist = [CACHE_NAME];
+          event.waitUntil(
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(cacheNames.map(function(cacheName) {
+                if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+              }));
+            })
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(function() {});
+    });
+  }
+</script>
+</head>
+<body>
+
+
+<header class="blog-header">
+  <a href="../index.html" style="display: inline-block;">
+    <h1 class="site-name" style="margin: 0;">ata.soy</h1>
+  </a>
+</header>
+
+</p>
+<p><div style="text-align: center; padding: 2rem 1rem 3rem;">
+  <h1 style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; margin: 0 0 1.5rem 0; line-height: 1.2; padding: 0 0.5rem; word-wrap: break-word;">How to Build Your Own Small SQLite Clone - SQLcik</h1>
+  <div style="display: flex; justify-content: center; gap: 1rem; font-size: clamp(0.75rem, 2vw, 0.9rem); opacity: 0.8; flex-wrap: wrap; padding: 0 1rem;">
+    <span>July 11, 2025</span>
+    <span>•</span>
+    <span>6 min read</span>
+    <span>•</span>
+    <span>Ata Atasoy</span>
+  </div>
+</div>
+
+</p>
+<p><div style="width: 100%; max-width: 800px; margin: 0 auto 2rem; padding: 0 1rem;">
+  <img src="../public/how-to-build-your-own-small-sqlite-clone-sqlcik/banner.png" alt="How to Build Your Own Small SQLite Clone - SQLcik" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; max-width: 100%; background: none !important;">
+</div>
+
+</p>
+<p><div class="blog-container" style="width: 100%; max-width: 800px;">
+<article class="blog-content">
+
+</p>
+<h2>Introduction</h2>
+<p>This is my second project after I did a small compiler, and it took more time than I expected. Not because the project was complex or hard, but because I didn't have too much time for it since I was working on my graduation project and finals. Now, as I am a graduated Computer Engineer, maybe it is time to actually take the art of programming and technical stuff more seriously and improve!</p>
+<h2>What do you need to build a small database engine?</h2>
+<p>We can divide the whole project into small parts. I am pretty sure that if you want to build a more complex engine, you would need a better-thought-out structure, but for my case, where I will just support simple operations such as:</p>
+<ul>
+<li><code>select</code></li>
+<li><code>insert</code></li>
+<li><code>delete</code></li>
+<li><code>update</code></li>
+<li><code>all</code></li>
+</ul>
+<p>I divided the project into:</p>
+<pre><code class="language-bash">src/
+├── database.ts # Where all hard operations take place
+├── main.ts # REPL
+├── parser.ts # Tokenization of prompts
+└── types.ts # Global types
+</code></pre>
+<p>and plus <code>users.json</code> file for disk storage.</p>
+<h2>What is a REPL?</h2>
+<p>REPL stands for <code>read, eval, print loop</code> and it is the heart of our project. <code>main.ts</code> contains our REPL and it looks like this:</p>
+<pre><code class="language-ts">import readline from &quot;readline&quot;;
+import { parseCommand } from &quot;./parser&quot;;
+import { save, getUser, deleteUser, getAll, updateUser } from &quot;./database&quot;;
+const rl = readline.createInterface({
+    input:process.stdin,
+    output:process.stdout,
+    prompt:&quot;sqlcik &gt;&gt;&gt; &quot;
+});
+
+console.log(&quot;Welcome to SQLCIK&quot;)
+rl.prompt();
+
+rl.on(&quot;line&quot;,(line) =&gt; {
+    const input = line.trim();
+    if(input === &quot;.quit&quot;){
+        rl.close()
+        return
+    }
+    let parsedCommand = parseCommand(input)
+    let result = null
+    let commandType = parsedCommand.commandType
+    if(commandType == &quot;insert&quot;){
+        result = save(parsedCommand.user)
+    } else if(commandType == &quot;select&quot;){
+       result = getUser(parsedCommand.user.id)
+    } else if(commandType == &quot;delete&quot;){
+        result = deleteUser(parsedCommand.user.id)
+    } else if (commandType == &quot;all&quot;){
+        result = getAll()
+    } else if (commandType == &quot;update&quot;){
+        result = updateUser(parsedCommand.user)
+    } else {
+        result = &quot;Error: undefined command&quot;
+    }
+    console.log(result)
+    rl.prompt()
+});
+
+</code></pre>
+<h2>Parsers are everywhere :D</h2>
+<p>Actually, we are encountering parsers all the time, even in places we sometimes don't expect as normal users. But every time there is something like natural language or structured input, there is always a parser.</p>
+<p>In our case, we need to parse prompts like <code>insert 0 ata atasoy 22</code> to an object:</p>
+<pre><code class="language-json">{
+  &quot;commandType&quot;: &quot;insert&quot;,
+  &quot;user&quot;: {
+    &quot;id&quot;: 0,
+    &quot;name&quot;: &quot;ata&quot;,
+    &quot;surname&quot;: &quot;atasoy&quot;,
+    &quot;age&quot;: 22
+  }
+}
+</code></pre>
+<p>A simple function can solve this for us, BUT it gets more complex if prompts are more complicated than simple insert or update operations.</p>
+<h2>Database.ts - where all the hard operations take place</h2>
+<p>Here we handle all operations regarding the file operations and the logic behind our prompt operations. This file is home to all the main functions used in <code>main.ts</code> and is where all the magic happens. The code here is not complex, but I have some design choices I made and want to talk about.</p>
+<p>For example, let's take a look at the <code>deleteUser</code> function:</p>
+<pre><code class="language-ts">export function deleteUser(id:String): EngineResponse {
+    const usersFile = fs.readFileSync('./users.json', 'utf-8');
+    const users = JSON.parse(usersFile);
+    let usersObjectList = users
+    
+    for(let i = 0;i&lt;usersObjectList.length;i++){
+        if(usersObjectList[i].id === id){
+            let deletedUser = usersObjectList[i]
+            users.splice(i,1) 
+            fs.writeFile(&quot;users.json&quot;, JSON.stringify(users), 'utf8', (err) =&gt; {
+            if (err) {
+                console.error('Error writing to file', err);
+            }
+                })
+            return {&quot;status&quot;:&quot;success&quot;,&quot;user&quot;: deletedUser}
+        }
+    }
+    
+    let nullUser:User = {id:&quot;null&quot;, name: &quot;null&quot;, surname: &quot;null&quot;,
+        age: &quot;null&quot;}
+    return {&quot;status&quot;:&quot;failed: provided ID is not valid &quot;, &quot;user&quot;: nullUser}
+
+}
+</code></pre>
+<p>First of all, you can see that this returns the <code>EngineResponse</code> type, where <code>EngineResponse</code> is just a status code and a user object.</p>
+<p>About the loop where we find the user with the ID and delete them, we could also use a simple <code>filter</code> function to very quickly delete the unwanted user, but I didn't think of that at the start. Plus, I would like to return the deleted user before deleting, so this way is good anyway. I don't know which one is more efficient, but this looks like the cleaner option to me.</p>
+<h2>Conclusion</h2>
+<p>To build your own SQLite (simple like mine), you would need to create mainly 3 different files, but the most important things to get from this are:</p>
+<ul>
+<li>What is REPL</li>
+<li>How the parser is working</li>
+<li>And just file manipulations</li>
+</ul>
+<p>You should definitely try to build your own SQLite-like project because I think it would really deepen your knowledge about databases, their limits, and the best ways of writing good SQL commands, because you would have more knowledge of how everything is working under the hood.</p>
+<p>Thanks for reading :D<br>
+GitHub link: <a href="https://github.com/atasoya/sqlcik">https://github.com/atasoya/sqlcik</a></p>
+<p></article>
+</div>
+</body>
+</html>
+
+</p>
+<p><footer class="blog-footer">
+  <p style="line-height: 1.6; word-wrap: break-word;">Have questions or feedback? Feel free to <a href="mailto:ataatasoy2013@gmail.com">email me</a> or connect with me on <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</footer>
+
+</p>

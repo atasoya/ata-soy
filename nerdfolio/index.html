@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ata Atasoy</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: none;
+      color: inherit;
+      text-align: left;
+    }
+
+    main {
+      width: 90%;
+      max-width: 700px;
+      transform: translate(10%, -10%); /* shifts right and up for better visual centering */
+    }
+
+    h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    section p {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        width: 92%;
+        transform: none;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="nerdfolio.css">
+  <script>
+    // Prefetch links on hover for instant navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const prefetched = new Set();
+      
+      document.addEventListener('mouseover', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+        
+        if (new URL(link.href).origin !== location.origin) return;
+        
+        const prefetchLink = document.createElement('link');
+        prefetchLink.rel = 'prefetch';
+        prefetchLink.href = link.href;
+        prefetchLink.as = 'document';
+        document.head.appendChild(prefetchLink);
+        prefetched.add(link.href);
+      });
+    });
+    
+    // Create and register service worker inline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        const swCode = `
+          const CACHE_NAME = 'ata-soy-v1';
+          const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+          
+          self.addEventListener('install', function(event) {
+            event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+          });
+          
+          self.addEventListener('fetch', function(event) {
+            event.respondWith(
+              caches.match(event.request).then(function(response) {
+                if (response) return response;
+                return fetch(event.request).then(function(response) {
+                  if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                    return response;
+                  }
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                  return response;
+                });
+              })
+            );
+          });
+          
+          self.addEventListener('activate', function(event) {
+            const cacheWhitelist = [CACHE_NAME];
+            event.waitUntil(
+              caches.keys().then(function(cacheNames) {
+                return Promise.all(cacheNames.map(function(cacheName) {
+                  if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+                }));
+              })
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(function() {});
+      });
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Ata Atasoy</h1>
+    <nav>
+      <a href="#" style="text-decoration: underline;">About</a>
+      <a href="blogs.html">Blog</a>
+      <a href="projects.html">Projects</a>
+      <a href="library.html">Library</a>
+    </nav>
+    <section>
+      <p><strong>Education:</strong> Politecnico di Milano, CSE, Master's Degree, First Year</p>
+      <p><strong>Contact:</strong>     <a href="mailto:ataatasoy2013@gmail.com">Email</a>  <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/">Linkedin</a>  <a href="https://github.com/atasoya">Github</a>  <a href="http://x.com/AtaAtasoy11">X</a>  <a href="https://lichess.org/@/genialnost">Lichess</a>  </p>
+      <p><strong>Location:</strong> Milan, Italy</p>
+      <p><strong>Interests:</strong> Engineering, Chess, Reading, Fitness, Health, Entrepreneurship</p>
+      <p><strong>Currently:</strong> I don't know what I am doing</p>
+      <p><strong>Latest Project:</strong> CoolBg - Create cool backgrounds for your images with ease.</p>
+      <p><strong>Latest Blog:</strong> How I Got a 4.0 GPA While Still Touching Grass</p>
+      <a href="https://github.com/atasoya/nerdfolio" style="font-size:0.5rem">made with nerdfolio btw.</a>
+    </section>
+  </main>
+</body>
+</html>
+

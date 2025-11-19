@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library - Ata Atasoy</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: none;
+      color: inherit;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      column-gap: 3rem;
+      row-gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .library-card {
+      border: 2px dashed currentColor;
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      height: 144px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .library-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .library-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .library-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .library-link {
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .library-link:hover {
+      opacity: 1;
+    }
+
+    .library-footer {
+      margin-top: auto;
+      padding-top: 0.5rem;
+      border-top: 1px solid currentColor;
+    }
+
+    .library-author {
+      color: var(--yellow);
+      font-size: 0.75rem;
+      margin: 0.25rem 0;
+    }
+
+    .library-date {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin: 0.25rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .library-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      body {
+        padding: 1rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="nerdfolio.css">
+  <script>
+    // Prefetch links on hover for instant navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const prefetched = new Set();
+      
+      document.addEventListener('mouseover', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+        
+        if (new URL(link.href).origin !== location.origin) return;
+        
+        const prefetchLink = document.createElement('link');
+        prefetchLink.rel = 'prefetch';
+        prefetchLink.href = link.href;
+        prefetchLink.as = 'document';
+        document.head.appendChild(prefetchLink);
+        prefetched.add(link.href);
+      });
+    });
+    
+    // Create and register service worker inline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        const swCode = `
+          const CACHE_NAME = 'ata-soy-v1';
+          const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+          
+          self.addEventListener('install', function(event) {
+            event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+          });
+          
+          self.addEventListener('fetch', function(event) {
+            event.respondWith(
+              caches.match(event.request).then(function(response) {
+                if (response) return response;
+                return fetch(event.request).then(function(response) {
+                  if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                    return response;
+                  }
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                  return response;
+                });
+              })
+            );
+          });
+          
+          self.addEventListener('activate', function(event) {
+            const cacheWhitelist = [CACHE_NAME];
+            event.waitUntil(
+              caches.keys().then(function(cacheNames) {
+                return Promise.all(cacheNames.map(function(cacheName) {
+                  if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+                }));
+              })
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(function() {});
+      });
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html" style="text-decoration: none; color: inherit;">ata.soy</a></h1>
+  </header>
+
+  <div class="library-grid">
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">The Pragmatic Programmer: Your Journey to Mastery</h2>
+        <a href="https://www.amazon.com/Pragmatic-Programmer-Journey-Mastery-2nd/dp/0135957052" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">David Thomas & Andrew Hunt</p>
+        <p class="library-date">08-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">The Lean Startup: How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses</h2>
+        <a href="https://www.amazon.com/Lean-Startup-Entrepreneurs-Continuous-Innovation/dp/0307887898" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Eric Ries</p>
+        <p class="library-date">08-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">Clean Code: A Handbook of Agile Software Craftsmanship</h2>
+        <a href="https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350884" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Robert C. Martin</p>
+        <p class="library-date">07-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">How to Win Friends and Influence People</h2>
+        <a href="https://www.amazon.com/How-Win-Friends-Influence-People/dp/0671027034" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Dale Carnegie</p>
+        <p class="library-date">06-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">The Subtle Art of Not Giving a F*ck</h2>
+        <a href="https://markmanson.net/books/subtle-art" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Mark Manson</p>
+        <p class="library-date">05-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">Learning Go: An Idiomatic Approach to Real-World Go Programming</h2>
+        <a href="https://www.amazon.com/Learning-Go-Idiomatic-Real-World-Programming/dp/1492077216" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Jon Bodner</p>
+        <p class="library-date">06-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">The Millionaire Fastlane</h2>
+        <a href="https://www.amazon.com/Millionaire-Fastlane-Crack-Wealth-Lifetime/dp/0984358102" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">MJ DeMarco</p>
+        <p class="library-date">02-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">The 4-Hour Workweek</h2>
+        <a href="https://fourhourworkweek.com/" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Timothy Ferriss</p>
+        <p class="library-date">03-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">Make: Bootstrapper's Handbook</h2>
+        <a href="https://makebook.io/" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Pieter Levels</p>
+        <p class="library-date">04-2025</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">The 48 Laws of Power</h2>
+        <a href="https://www.amazon.com/48-Laws-Power-Robert-Greene/dp/0140280197" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Robert Greene</p>
+        <p class="library-date">06-2024</p>
+      </div>
+    </div>
+    
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">Million Dollar Weekend</h2>
+        <a href="https://noahkagan.com/mdwbook/" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">Noah Kagan & Tahl Raz</p>
+        <p class="library-date">05-2024</p>
+      </div>
+    </div>
+    
+  </div>
+</body>
+</html>
+

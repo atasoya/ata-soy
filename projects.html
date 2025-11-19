@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Ata Atasoy</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: none;
+      color: inherit;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      column-gap: 3rem;
+      row-gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .project-card {
+      border: 2px dashed currentColor;
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .project-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+    }
+
+    .project-link {
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .project-link:hover {
+      opacity: 1;
+    }
+
+    .project-description {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .project-tag {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+
+    .project-cta {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-date {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      body {
+        padding: 1rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="nerdfolio.css">
+  <script>
+    // Prefetch links on hover for instant navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const prefetched = new Set();
+      
+      document.addEventListener('mouseover', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+        
+        if (new URL(link.href).origin !== location.origin) return;
+        
+        const prefetchLink = document.createElement('link');
+        prefetchLink.rel = 'prefetch';
+        prefetchLink.href = link.href;
+        prefetchLink.as = 'document';
+        document.head.appendChild(prefetchLink);
+        prefetched.add(link.href);
+      });
+    });
+    
+    // Create and register service worker inline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        const swCode = `
+          const CACHE_NAME = 'ata-soy-v1';
+          const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+          
+          self.addEventListener('install', function(event) {
+            event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+          });
+          
+          self.addEventListener('fetch', function(event) {
+            event.respondWith(
+              caches.match(event.request).then(function(response) {
+                if (response) return response;
+                return fetch(event.request).then(function(response) {
+                  if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                    return response;
+                  }
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                  return response;
+                });
+              })
+            );
+          });
+          
+          self.addEventListener('activate', function(event) {
+            const cacheWhitelist = [CACHE_NAME];
+            event.waitUntil(
+              caches.keys().then(function(cacheNames) {
+                return Promise.all(cacheNames.map(function(cacheName) {
+                  if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+                }));
+              })
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(function() {});
+      });
+    }
+  </script>
+</head>
+<body>
+  {% header %}
+  <div class="projects-grid">
+    {{#each projects}}
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">{{ title }}</h2>
+        <a href="{{ websiteUrl }}" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">{{ description }}</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">{{ technologies }}</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="{{ link }}" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">{{ date }}</span>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</body>
+</html>
+

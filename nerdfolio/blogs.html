@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Ata Atasoy</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: none;
+      color: inherit;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .blogs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      column-gap: 3rem;
+      row-gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .blog-card {
+      border: 2px dashed currentColor;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      height: 384px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .blog-new-badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      border: 1px dashed;
+      z-index: 10;
+    }
+
+    .blog-new-badge.hidden {
+      display: none;
+    }
+
+    .blog-image {
+      width: 100%;
+      height: 176px;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: none;
+    }
+
+    .blog-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: none !important;
+    }
+
+    .blog-content {
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      height: 208px;
+      overflow: hidden;
+    }
+
+    .blog-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem 0;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-description {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin: 0;
+      flex-grow: 1;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-footer {
+      margin-top: auto;
+      padding-top: 0.5rem;
+      border-top: 1px solid currentColor;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+
+
+    @media (max-width: 768px) {
+      .blogs-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      body {
+        padding: 1rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="nerdfolio.css">
+  <script>
+    // Prefetch links on hover for instant navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const prefetched = new Set();
+      
+      document.addEventListener('mouseover', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+        
+        if (new URL(link.href).origin !== location.origin) return;
+        
+        const prefetchLink = document.createElement('link');
+        prefetchLink.rel = 'prefetch';
+        prefetchLink.href = link.href;
+        prefetchLink.as = 'document';
+        document.head.appendChild(prefetchLink);
+        prefetched.add(link.href);
+      });
+    });
+    
+    // Create and register service worker inline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        const swCode = `
+          const CACHE_NAME = 'ata-soy-v1';
+          const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+          
+          self.addEventListener('install', function(event) {
+            event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+          });
+          
+          self.addEventListener('fetch', function(event) {
+            event.respondWith(
+              caches.match(event.request).then(function(response) {
+                if (response) return response;
+                return fetch(event.request).then(function(response) {
+                  if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                    return response;
+                  }
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                  return response;
+                });
+              })
+            );
+          });
+          
+          self.addEventListener('activate', function(event) {
+            const cacheWhitelist = [CACHE_NAME];
+            event.waitUntil(
+              caches.keys().then(function(cacheNames) {
+                return Promise.all(cacheNames.map(function(cacheName) {
+                  if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+                }));
+              })
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(function() {});
+      });
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html" style="text-decoration: none; color: inherit;">ata.soy</a></h1>
+  </header>
+
+  <div class="blogs-grid">
+    
+    <a href="blogs/how-to-make-cli-tools-in-ts.html" class="blog-card">
+      <div class="blog-new-badge ">NEW</div>
+      <div class="blog-image">
+        <img src="public/how-to-make-cli-tools-in-ts/banner.png" alt="How to Make CLI Tools in TypeScript with Komutan">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">How to Make CLI Tools in TypeScript with Komutan</h2>
+        <p class="blog-description">Learn how to create, develop, test, and publish CLI tools in TypeScript using Komutan. A comprehensive guide to building command-line applications with modern tooling.</p>
+        <div class="blog-footer">
+          <span>5 mins</span>
+          <span class="blog-date">2025-09-20</span>
+        </div>
+      </div>
+    </a>
+    
+    <a href="blogs/how-i-got-a-4-gpa-while-still-touching-grass.html" class="blog-card">
+      <div class="blog-new-badge hidden">NEW</div>
+      <div class="blog-image">
+        <img src="public/how-i-got-a-4-gpa-while-still-touching-grass/banner.png" alt="How I Got a 4.0 GPA While Still Touching Grass">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">How I Got a 4.0 GPA While Still Touching Grass</h2>
+        <p class="blog-description">Learn how to achieve academic excellence while maintaining a balanced life. Discover proven strategies for getting a 4.0 GPA while building projects, exercising, and having a social life.</p>
+        <div class="blog-footer">
+          <span>8 mins</span>
+          <span class="blog-date">2025-08-15</span>
+        </div>
+      </div>
+    </a>
+    
+    <a href="blogs/shallow-deep-dive-on-mail-servers-and-dns-records.html" class="blog-card">
+      <div class="blog-new-badge hidden">NEW</div>
+      <div class="blog-image">
+        <img src="public/shallow-deep-dive-on-mail-servers-and-dns-records/banner.png" alt="A Shallow Deep Dive on Mail Servers and DNS Records">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">A Shallow Deep Dive on Mail Servers and DNS Records</h2>
+        <p class="blog-description">We use email daily and it is the invisible but most important marketing and communication tool. Us developers use email for several things but we (at least me) don't understand how it works under the hood.</p>
+        <div class="blog-footer">
+          <span>6 mins</span>
+          <span class="blog-date">2025-07-20</span>
+        </div>
+      </div>
+    </a>
+    
+    <a href="blogs/how-to-build-your-own-small-sqlite-clone-sqlcik.html" class="blog-card">
+      <div class="blog-new-badge hidden">NEW</div>
+      <div class="blog-image">
+        <img src="public/how-to-build-your-own-small-sqlite-clone-sqlcik/banner.png" alt="How to Build Your Own Small SQLite Clone - SQLcik">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">How to Build Your Own Small SQLite Clone - SQLcik</h2>
+        <p class="blog-description">This is my second project after I did a small compiler, and it took more time than I expected. Not because the project was complex or hard, but because I didn't have too much time for it since..</p>
+        <div class="blog-footer">
+          <span>6 mins</span>
+          <span class="blog-date">2025-07-11</span>
+        </div>
+      </div>
+    </a>
+    
+    <a href="blogs/how-i-handled-large-file-uploads-in-serverless-nextjs.html" class="blog-card">
+      <div class="blog-new-badge hidden">NEW</div>
+      <div class="blog-image">
+        <img src="public/how-i-handled-large-file-uploads-in-serverless-nextjs/banner.png" alt="How I handled large file uploads in a Serverless Next.js app">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">How I handled large file uploads in a Serverless Next.js app</h2>
+        <p class="blog-description">I ran into Vercel's 4.5MB serverless function limit when uploading PDFs to OpenAI. The solution? Use client-side uploads to cloud storage with signed URLs, then process files from there.</p>
+        <div class="blog-footer">
+          <span>3 mins</span>
+          <span class="blog-date">2025-06-01</span>
+        </div>
+      </div>
+    </a>
+    
+    <a href="blogs/compiler-construction-md2jsx.html" class="blog-card">
+      <div class="blog-new-badge hidden">NEW</div>
+      <div class="blog-image">
+        <img src="public/compiler-construction-md2jsx/banner.png" alt="Simple Compiler Construction - md2jsx">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">Simple Compiler Construction - md2jsx</h2>
+        <p class="blog-description">I had enough of vibe coding for around two months, so I wanted to take control back and learn more about computer science. So I built a simple Markdown to JSX compiler. I'm currently studying programming language fundamentals where we also go through this stuff!</p>
+        <div class="blog-footer">
+          <span>8 mins</span>
+          <span class="blog-date">2025-05-19</span>
+        </div>
+      </div>
+    </a>
+    
+    <a href="blogs/my-binary-search-notes-only-explanation-you-would-ever-need.html" class="blog-card">
+      <div class="blog-new-badge hidden">NEW</div>
+      <div class="blog-image">
+        <img src="public/my-binary-search-notes-only-explanation-you-would-ever-need/banner.png" alt="My Binary Search Notes - Only Explanation You Would Ever Need">
+      </div>
+      <div class="blog-content">
+        <h2 class="blog-title">My Binary Search Notes - Only Explanation You Would Ever Need</h2>
+        <p class="blog-description">Binary search is one of the fundamental sorting algorithms and a building block for more complex ones. It can be tricky to understand at first...</p>
+        <div class="blog-footer">
+          <span>5 mins</span>
+          <span class="blog-date">2025-05-04</span>
+        </div>
+      </div>
+    </a>
+    
+  </div>
+</body>
+</html>
+

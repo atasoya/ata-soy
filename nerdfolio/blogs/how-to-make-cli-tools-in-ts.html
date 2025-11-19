@@ -1,0 +1,356 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - Ata Atasoy</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../nerdfolio.css" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    width: 100%;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content p {
+    margin: 1rem 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 8px;
+    display: block;
+    background: none !important;
+  }
+
+  .blog-content code {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .blog-content pre {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .blog-content pre code {
+    word-break: normal;
+  }
+
+  .blog-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content a {
+    text-decoration: underline;
+  }
+
+  .blog-header {
+    text-align: center;
+    padding: 3rem 1rem 1rem;
+  }
+
+  .blog-header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .blog-header .site-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .blog-footer {
+    border-top: 1px solid currentColor;
+    opacity: 0.9;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .blog-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    .blog-container {
+      padding: 0 1rem 2rem;
+      max-width: 100%;
+    }
+
+    .blog-content {
+      font-size: 0.95rem;
+    }
+
+    .blog-content h1 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .blog-content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content img {
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .blog-content code {
+      font-size: 0.85em;
+      padding: 0.15rem 0.3rem;
+    }
+
+    .blog-content pre {
+      padding: 0.75rem;
+      margin: 1rem -1rem;
+      border-radius: 0;
+    }
+
+    .blog-content table {
+      font-size: 0.85rem;
+    }
+
+    .blog-header {
+      padding: 1.5rem 1rem 0.5rem;
+    }
+
+    .blog-header .site-name {
+      font-size: 0.75rem;
+    }
+
+    .blog-footer {
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // Prefetch links on hover for instant navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const prefetched = new Set();
+    
+    // Prefetch on hover
+    document.addEventListener('mouseover', function(e) {
+      const link = e.target.closest('a');
+      if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+      
+      // Only prefetch same-origin links
+      if (new URL(link.href).origin !== location.origin) return;
+      
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = link.href;
+      prefetchLink.as = 'document';
+      document.head.appendChild(prefetchLink);
+      prefetched.add(link.href);
+    });
+  });
+  
+  // Create and register service worker inline
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      const swCode = `
+        const CACHE_NAME = 'ata-soy-v1';
+        const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+        
+        self.addEventListener('install', function(event) {
+          event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+        });
+        
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request).then(function(response) {
+              if (response) return response;
+              return fetch(event.request).then(function(response) {
+                if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                  return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                return response;
+              });
+            })
+          );
+        });
+        
+        self.addEventListener('activate', function(event) {
+          const cacheWhitelist = [CACHE_NAME];
+          event.waitUntil(
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(cacheNames.map(function(cacheName) {
+                if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+              }));
+            })
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(function() {});
+    });
+  }
+</script>
+</head>
+<body>
+
+
+<header class="blog-header">
+  <a href="../index.html" style="display: inline-block;">
+    <h1 class="site-name" style="margin: 0;">ata.soy</h1>
+  </a>
+</header>
+
+</p>
+<p><div style="text-align: center; padding: 2rem 1rem 3rem;">
+  <h1 style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; margin: 0 0 1.5rem 0; line-height: 1.2; padding: 0 0.5rem; word-wrap: break-word;">How to Make CLI Tools in TypeScript with Komutan</h1>
+  <div style="display: flex; justify-content: center; gap: 1rem; font-size: clamp(0.75rem, 2vw, 0.9rem); opacity: 0.8; flex-wrap: wrap; padding: 0 1rem;">
+    <span>September 20, 2025</span>
+    <span>•</span>
+    <span>5 min read</span>
+    <span>•</span>
+    <span>Ata Atasoy</span>
+  </div>
+</div>
+
+</p>
+<p><div style="width: 100%; max-width: 800px; margin: 0 auto 2rem; padding: 0 1rem;">
+  <img src="../public/how-to-make-cli-tools-in-ts/banner.png" alt="How to Make CLI Tools in TypeScript with Komutan" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; max-width: 100%; background: none !important;">
+</div>
+
+</p>
+<p><div class="blog-container" style="width: 100%; max-width: 800px;">
+<article class="blog-content">
+
+</p>
+<h2>Introduction</h2>
+<p>I was playing with CLI tools and thought it would be cool to make one and publish it. While I was searching for tech to use, I saw cobra and cobra-cli in Go, which is absolutely perfect. After playing with it for some time, I decided to make CLI tools also in TypeScript, but I had a hard time finding good resources, so here we are with <a href="https://github.com/atasoya/komutan">komutan</a>.</p>
+<h2>What is Komutan?</h2>
+<p>Komutan is a CLI toolkit on top of <a href="https://www.npmjs.com/package/commander">commanderjs</a> that streamlines the process of creating, developing, testing, and publishing CLI apps.</p>
+<h2>Getting Started</h2>
+<p>Make sure that you have node and npm on your system, and then you can just install komutan with a simple command:</p>
+<pre><code class="language-bash">npx komutan
+</code></pre>
+<h2>Tutorial</h2>
+<p>In this tutorial, let's create a simple CLI tool that welcomes a given name. Let's create a new directory:</p>
+<pre><code class="language-bash">mkdir welcome
+cd welcome
+</code></pre>
+<p>After making sure that you are in the welcome directory, run the <code>komutan init &lt;name&gt;</code> command:</p>
+<pre><code class="language-bash">npx komutan init welcome
+</code></pre>
+<p>This will scaffold your CLI app. You can see the project tree on GitHub.</p>
+<p><img src="../public/how-to-make-cli-tools-in-ts/1.png" alt="Project structure screenshot"></p>
+<p>Now let's test our CLI:</p>
+<pre><code class="language-bash">npx komutan test # you may need to add sudo
+welcome
+</code></pre>
+<p><img src="../public/how-to-make-cli-tools-in-ts/2.png" alt="Testing CLI screenshot"></p>
+<p>By default, you will have a hello command. Let's try that:</p>
+<p><img src="../public/how-to-make-cli-tools-in-ts/3.png" alt="Hello command screenshot"></p>
+<p>Perfect! Everything is working. Now let's add a welcome command and modify it.</p>
+<p>You can add a new command by using the <code>komutan add &lt;name&gt;</code> command:</p>
+<pre><code class="language-bash">npx komutan add welcome
+</code></pre>
+<p><img src="../public/how-to-make-cli-tools-in-ts/4.png" alt="Add command screenshot"></p>
+<p>Now let's make it accept a name:</p>
+<p><img src="../public/how-to-make-cli-tools-in-ts/5.png" alt="Modified welcome command code"></p>
+<p>Run the test command again:</p>
+<p><img src="../public/how-to-make-cli-tools-in-ts/6.png" alt="Testing modified command"></p>
+<p>And now use it:</p>
+<p><img src="../public/how-to-make-cli-tools-in-ts/7.png" alt="Using the welcome command"></p>
+<p>Here it is - everything is working fine!</p>
+<p>Now the last step: you will probably want to publish your CLI, and it is as easy as running:</p>
+<pre><code class="language-bash">npx komutan publish # you may need to use sudo
+</code></pre>
+<h2>Conclusion</h2>
+<p>Done! You now know how to ship CLI apps like crazy.</p>
+<p></article>
+</div>
+</body>
+</html>
+
+</p>
+<p><footer class="blog-footer">
+  <p style="line-height: 1.6; word-wrap: break-word;">Have questions or feedback? Feel free to <a href="mailto:ataatasoy2013@gmail.com">email me</a> or connect with me on <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</footer>
+
+</p>

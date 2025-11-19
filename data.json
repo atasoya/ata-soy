@@ -1,0 +1,386 @@
+{
+    "name": "Ata Atasoy",
+    "author": "Ata Atasoy",
+    "email": "ataatasoy2013@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/ata-atasoy-67b496209/",
+    "education": "Politecnico di Milano, CSE, Master's Degree, First Year",
+    "contact": {
+        "Email": "mailto:ataatasoy2013@gmail.com",
+        "Linkedin": "https://www.linkedin.com/in/ata-atasoy-67b496209/",
+        "Github": "https://github.com/atasoya",
+        "X": "http://x.com/AtaAtasoy11",
+        "Lichess": "https://lichess.org/@/genialnost"
+    },
+    "location": "Milan, Italy",
+    "interests": "Engineering, Chess, Reading, Fitness, Health, Entrepreneurship",
+    "currently": "I don't know what I am doing",
+    "latestProject": "CoolBg - Create cool backgrounds for your images with ease.",
+    "latestBlog": "How I Got a 4.0 GPA While Still Touching Grass",
+    "projects": [
+        {
+            "title": "TicTacToe AI",
+            "description": "Small implementation of minimax algorithm for tic-tac-toe",
+            "technologies": "Typescript, React, Vite",
+            "websiteUrl": "https://github.com/atasoya/tictactoeai",
+            "link": "tictactoe.ata.soy",
+            "date": "20-09-2025"
+        },
+        {
+            "title": "VaultEnv",
+            "description": "Secure local env management app",
+            "technologies": "Typescript, React, Electron, Sqlite",
+            "websiteUrl": "https://github.com/atasoya/vaultenv",
+            "link": "https://github.com/atasoya/vaultenv",
+            "date": "25-08-2025"
+        },
+        {
+            "title": "Komutan",
+            "description": "A CLI tool for creating and managing CommanderJS CLI tools inspired by cobra-cli",
+            "technologies": "Typescript",
+            "websiteUrl": "https://github.com/atasoya/komutan",
+            "link": "https://github.com/atasoya/komutan",
+            "date": "18-08-2025"
+        },
+        {
+            "title": "CLI Chess Puzzle",
+            "description": "Command line tool to fetch chess puzzles from Lichess and Chess.com.",
+            "technologies": "Typescript",
+            "websiteUrl": "https://github.com/atasoya/cli-chess-puzzle",
+            "link": "https://github.com/atasoya/cli-chess-puzzle",
+            "date": "18-08-2025"
+        },
+        {
+            "title": "CoolBg",
+            "description": "Create cool backgrounds for your images with ease.",
+            "technologies": "Typescript, Javascript, Vite",
+            "websiteUrl": "https://coolbg.ata.soy/",
+            "link": "https://github.com/atasoya/coolbg",
+            "date": "16-08-2025"
+        },
+        {
+            "title": "VCC",
+            "description": "A fast, lightweight CLI tool for managing Neovim colorschemes",
+            "technologies": "Go",
+            "websiteUrl": "https://github.com/atasoya/vcc",
+            "link": "https://github.com/atasoya/vcc",
+            "date": "02-08-2025"
+        },
+        {
+            "title": "SQLCIK",
+            "description": "Simple SQLite clone written in typescript.",
+            "technologies": "Typescript",
+            "websiteUrl": "https://github.com/atasoya/sqlcik",
+            "link": "https://github.com/atasoya/sqlcik",
+            "date": "11-07-2025"
+        },
+        {
+            "title": "FourGPA",
+            "description": "AI Powered study tools for students.",
+            "technologies": "Next.js, PostgreSQL",
+            "websiteUrl": "https://www.fourgpa.com/",
+            "link": "https://www.fourgpa.com/",
+            "date": "01-06-2025"
+        },
+        {
+            "title": "md2jsx Compiler",
+            "description": "Simple markdown to jsx compiler written in typescript and deno.",
+            "technologies": "Typescript",
+            "websiteUrl": "https://github.com/atasoya/md2jsx-compiler",
+            "link": "https://github.com/atasoya/md2jsx-compiler",
+            "date": "19-05-2025"
+        },
+        {
+            "title": "Planti",
+            "description": "Developer-First Plant Management System i build in 2 days for interview assignment.",
+            "technologies": "Next.js, Express, PostgreSQL, Docker",
+            "websiteUrl": "https://github.com/atasoya/planti",
+            "link": "https://github.com/atasoya/planti",
+            "date": "30-04-2025"
+        },
+        {
+            "title": "LansmanTR",
+            "description": "Product luch for Türkiye market.",
+            "technologies": "Next.js, PostgreSQL",
+            "websiteUrl": "https://www.lansmantr.com/",
+            "link": "https://x.com/AtaAtasoy11/status/1910958566053470679",
+            "date": "17-03-2025"
+        },
+        {
+            "title": "Chess Street",
+            "description": "3rd chess related app after i said if was gonne be last one. Had 500 users in 3 days because it went viral on lichess and my blog post be on the first page of lichess!",
+            "technologies": "Next.js, MongoDB, Firebase",
+            "websiteUrl": "https://www.chesstreet.com/",
+            "link": "https://lichess.org/@/genialnost/blog/i-made-a-social-platform-for-chess-lovers/Xz3WCcJ2",
+            "date": "25-02-2025"
+        },
+        {
+            "title": "Is It Destined",
+            "description": "Fun activity website did to find out if it is destined for you. It as active every year on january.",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://www.isitdestined.com/",
+            "link": "https://www.isitdestined.com/",
+            "date": "30-12-2024"
+        },
+        {
+            "title": "Sevgilime Website",
+            "description": "My second startup (website builder for lovers)! Failed better and learned more about advertising and marketing.",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://www.sevgilime.website/",
+            "link": "https://www.sevgilime.website/",
+            "date": "10-12-2024"
+        },
+        {
+            "title": "Polimi Guide",
+            "description": "Did this to include in my motivation letter for my masters degree. I can say it worked :D",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://www.polimi.guide/",
+            "link": "https://www.polimi.guide/",
+            "date": "27-11-2024"
+        },
+        {
+            "title": "Random Certificate",
+            "description": "Random certificate generator made in one day to make fun of random certificate spammers on linkedin :D.",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://www.randomcertificate.com/",
+            "link": "https://www.randomcertificate.com/",
+            "date": "24-11-2024"
+        },
+        {
+            "title": "Eksik Oyuncu (Missing Player)",
+            "description": "I did this website after reading million dolar weekend. Tried if there was a deman to make bigger app but there wasn't. Nort Cyprus market is small.",
+            "technologies": "Next.js",
+            "websiteUrl": "https://www.eksikoyuncu.com/",
+            "link": "https://www.eksikoyuncu.com/",
+            "date": "17-09-2024"
+        },
+        {
+            "title": "Emu Guide",
+            "description": "App i did in 2 days as a guide for my university. It has constant 100 visitors/month until this day. Currently managing this as open source project.",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://www.emu.guide/",
+            "link": "https://github.com/atasoya/emu-guide",
+            "date": "10-09-2024"
+        },
+        {
+            "title": "Duble Piyon (Double Pawn)",
+            "description": "Turkish chess standings website where i made in one day as a proof of concept. But traffic never grew.",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://dublepiyon.atasoy.dev",
+            "link": "https://github.com/atasoya/duble-piyon",
+            "date": "04-09-2023"
+        },
+        {
+            "title": "Guess The Chess Player",
+            "description": "First time i taste the real online users on my website. I still remember looking at the google analics map excitedly.",
+            "technologies": "Next.js, Vercel",
+            "websiteUrl": "https://www.guessthechessplayer.com/",
+            "link": "https://www.guessthechessplayer.com/",
+            "date": "17-08-2023"
+        },
+        {
+            "title": "Leave a Quote",
+            "description": "Forum like website that i made for my friends to leave quotes. Did that during my summer training to learn Laravel and PHP.",
+            "technologies": "Laravel, MySQL",
+            "websiteUrl": "https://github.com/atasoya/leave-a-quote",
+            "link": "https://github.com/atasoya/leave-a-quote",
+            "date": "06-08-2023"
+        },
+        {
+            "title": "Simple CMD Games",
+            "description": "Simple CMD games that i made for fun to play on my mac. Also it was my first time using GO!",
+            "technologies": "Go",
+            "websiteUrl": "https://github.com/atasoya/Simple-Cmd-Games",
+            "link": "https://github.com/atasoya/Simple-Cmd-Games",
+            "date": "26-12-2023"
+        },
+        {
+            "title": "Twitter Chess Bot",
+            "description": "X(twitter) bot that was tweeting hourly chess puzzles. It was fun to see real people following it.",
+            "technologies": "Python",
+            "websiteUrl": "https://github.com/atasoya/lichess-bot",
+            "link": "https://x.com/hourlychessbot",
+            "date": "28-11-2023"
+        },
+        {
+            "title": "Lichess Bot",
+            "description": "My first ever open source contribution. I was already using the bot, so i thought i should contribute!. I added /profile command.",
+            "technologies": "Python",
+            "websiteUrl": "https://github.com/atasoya/lichess-bot",
+            "link": "https://github.com/atasoya/lichess-bot",
+            "date": "02-06-2022"
+        },
+        {
+            "title": "Short Term Memory Trainer App",
+            "description": "Second published mobile app.",
+            "technologies": "Flutter",
+            "websiteUrl": "https://github.com/atasoya/My-Chess-Trainer",
+            "link": "https://github.com/atasoya/My-Chess-Trainer",
+            "date": "06-09-2021"
+        },
+        {
+            "title": "My Chess Trainer App",
+            "description": "My first published mobile app! Also i got more than 100 downloads. It was a great milestone for me.",
+            "technologies": "Flutter",
+            "websiteUrl": "https://github.com/atasoya/My-Chess-Trainer",
+            "link": "https://github.com/atasoya/My-Chess-Trainer",
+            "date": "06-09-2021"
+        },
+        {
+            "title": "Convo Master Discord Bot",
+            "description": "A discord bot that helps your bad conversation skills. He had more than 100 servers and helped me get verified developer badge on discord",
+            "technologies": "Python",
+            "websiteUrl": "https://github.com/atasoya/convo-master-discord-bot",
+            "link": "https://github.com/atasoya/convo-master-discord-bot",
+            "date": "17-06-2021"
+        },
+        {
+            "title": "Basic Linear Equation Solver",
+            "description": "My first project that made me fall in love with coding. I learned so much from it (there was no AI back then), and Repl.it was just a simple text editor",
+            "technologies": "Python",
+            "websiteUrl": "https://github.com/atasoya/Basic-Linear-Equation-Solver",
+            "link": "https://github.com/atasoya/Basic-Linear-Equation-Solver",
+            "date": "11-08-2020"
+        },
+        {
+            "title": "Chess Elevate",
+            "description": "Chess platform for chess coaches to help them manage their students and improve their skills. Also the project get me in the entrepreneurship world where i failed miserably",
+            "technologies": "Next.js, MongoDB",
+            "websiteUrl": "https://chesselevate.com",
+            "link": "https://youtu.be/-VTd3M9bElw",
+            "date": "23-03-2024"
+        }
+    ],
+    "library": [
+        {
+            "title": "The Pragmatic Programmer: Your Journey to Mastery",
+            "author": "David Thomas & Andrew Hunt",
+            "dateRead": "08-2025",
+            "link": "https://www.amazon.com/Pragmatic-Programmer-Journey-Mastery-2nd/dp/0135957052"
+        },
+        {
+            "title": "The Lean Startup: How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses",
+            "author": "Eric Ries",
+            "dateRead": "08-2025",
+            "link": "https://www.amazon.com/Lean-Startup-Entrepreneurs-Continuous-Innovation/dp/0307887898"
+        },
+        {
+            "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+            "author": "Robert C. Martin",
+            "dateRead": "07-2025",
+            "link": "https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350884"
+        },
+        {
+            "title": "How to Win Friends and Influence People",
+            "author": "Dale Carnegie",
+            "dateRead": "06-2025",
+            "link": "https://www.amazon.com/How-Win-Friends-Influence-People/dp/0671027034"
+        },
+        {
+            "title": "The Subtle Art of Not Giving a F*ck",
+            "author": "Mark Manson",
+            "dateRead": "05-2025",
+            "link": "https://markmanson.net/books/subtle-art"
+        },
+        {
+            "title": "Learning Go: An Idiomatic Approach to Real-World Go Programming",
+            "author": "Jon Bodner",
+            "dateRead": "06-2025",
+            "link": "https://www.amazon.com/Learning-Go-Idiomatic-Real-World-Programming/dp/1492077216"
+        },
+        {
+            "title": "The Millionaire Fastlane",
+            "author": "MJ DeMarco",
+            "dateRead": "02-2025",
+            "link": "https://www.amazon.com/Millionaire-Fastlane-Crack-Wealth-Lifetime/dp/0984358102"
+        },
+        {
+            "title": "The 4-Hour Workweek",
+            "author": "Timothy Ferriss",
+            "dateRead": "03-2025",
+            "link": "https://fourhourworkweek.com/"
+        },
+        {
+            "title": "Make: Bootstrapper's Handbook",
+            "author": "Pieter Levels",
+            "dateRead": "04-2025",
+            "link": "https://makebook.io/"
+        },
+        {
+            "title": "The 48 Laws of Power",
+            "author": "Robert Greene",
+            "dateRead": "06-2024",
+            "link": "https://www.amazon.com/48-Laws-Power-Robert-Greene/dp/0140280197"
+        },
+        {
+            "title": "Million Dollar Weekend",
+            "author": "Noah Kagan & Tahl Raz",
+            "dateRead": "05-2024",
+            "link": "https://noahkagan.com/mdwbook/"
+        }
+    ],
+    "blogs": [
+        {
+            "title": "How to Make CLI Tools in TypeScript with Komutan",
+            "description": "Learn how to create, develop, test, and publish CLI tools in TypeScript using Komutan. A comprehensive guide to building command-line applications with modern tooling.",
+            "time": "5 mins",
+            "date": "2025-09-20",
+            "slug": "how-to-make-cli-tools-in-ts",
+            "image": "public/how-to-make-cli-tools-in-ts/banner.png",
+            "badgeClass": ""
+        },
+        {
+            "title": "How I Got a 4.0 GPA While Still Touching Grass",
+            "description": "Learn how to achieve academic excellence while maintaining a balanced life. Discover proven strategies for getting a 4.0 GPA while building projects, exercising, and having a social life.",
+            "time": "8 mins",
+            "date": "2025-08-15",
+            "slug": "how-i-got-a-4-gpa-while-still-touching-grass",
+            "image": "public/how-i-got-a-4-gpa-while-still-touching-grass/banner.png",
+            "badgeClass": "hidden"
+        },
+        {
+            "title": "A Shallow Deep Dive on Mail Servers and DNS Records",
+            "description": "We use email daily and it is the invisible but most important marketing and communication tool. Us developers use email for several things but we (at least me) don't understand how it works under the hood.",
+            "time": "6 mins",
+            "date": "2025-07-20",
+            "slug": "shallow-deep-dive-on-mail-servers-and-dns-records",
+            "image": "public/shallow-deep-dive-on-mail-servers-and-dns-records/banner.png",
+            "badgeClass": "hidden"
+        },
+        {
+            "title": "How to Build Your Own Small SQLite Clone - SQLcik",
+            "description": "This is my second project after I did a small compiler, and it took more time than I expected. Not because the project was complex or hard, but because I didn't have too much time for it since..",
+            "time": "6 mins",
+            "date": "2025-07-11",
+            "slug": "how-to-build-your-own-small-sqlite-clone-sqlcik",
+            "image": "public/how-to-build-your-own-small-sqlite-clone-sqlcik/banner.png",
+            "badgeClass": "hidden"
+        },
+        {
+            "title": "How I handled large file uploads in a Serverless Next.js app",
+            "description": "I ran into Vercel's 4.5MB serverless function limit when uploading PDFs to OpenAI. The solution? Use client-side uploads to cloud storage with signed URLs, then process files from there.",
+            "time": "3 mins",
+            "date": "2025-06-01",
+            "slug": "how-i-handled-large-file-uploads-in-serverless-nextjs",
+            "image": "public/how-i-handled-large-file-uploads-in-serverless-nextjs/banner.png",
+            "badgeClass": "hidden"
+        },
+        {
+            "title": "Simple Compiler Construction - md2jsx",
+            "description": "I had enough of vibe coding for around two months, so I wanted to take control back and learn more about computer science. So I built a simple Markdown to JSX compiler. I'm currently studying programming language fundamentals where we also go through this stuff!",
+            "time": "8 mins",
+            "date": "2025-05-19",
+            "slug": "compiler-construction-md2jsx",
+            "image": "public/compiler-construction-md2jsx/banner.png",
+            "badgeClass": "hidden"
+        },
+        {
+            "title": "My Binary Search Notes - Only Explanation You Would Ever Need",
+            "description": "Binary search is one of the fundamental sorting algorithms and a building block for more complex ones. It can be tricky to understand at first...",
+            "time": "5 mins",
+            "date": "2025-05-04",
+            "slug": "my-binary-search-notes-only-explanation-you-would-ever-need",
+            "image": "public/my-binary-search-notes-only-explanation-you-would-ever-need/banner.png",
+            "badgeClass": "hidden"
+        }
+    ]
+}

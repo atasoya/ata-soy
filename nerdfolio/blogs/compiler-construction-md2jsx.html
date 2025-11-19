@@ -1,0 +1,447 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - Ata Atasoy</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../nerdfolio.css" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    width: 100%;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content p {
+    margin: 1rem 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 8px;
+    display: block;
+    background: none !important;
+  }
+
+  .blog-content code {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .blog-content pre {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .blog-content pre code {
+    word-break: normal;
+  }
+
+  .blog-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content a {
+    text-decoration: underline;
+  }
+
+  .blog-header {
+    text-align: center;
+    padding: 3rem 1rem 1rem;
+  }
+
+  .blog-header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .blog-header .site-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .blog-footer {
+    border-top: 1px solid currentColor;
+    opacity: 0.9;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .blog-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    .blog-container {
+      padding: 0 1rem 2rem;
+      max-width: 100%;
+    }
+
+    .blog-content {
+      font-size: 0.95rem;
+    }
+
+    .blog-content h1 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .blog-content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content img {
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .blog-content code {
+      font-size: 0.85em;
+      padding: 0.15rem 0.3rem;
+    }
+
+    .blog-content pre {
+      padding: 0.75rem;
+      margin: 1rem -1rem;
+      border-radius: 0;
+    }
+
+    .blog-content table {
+      font-size: 0.85rem;
+    }
+
+    .blog-header {
+      padding: 1.5rem 1rem 0.5rem;
+    }
+
+    .blog-header .site-name {
+      font-size: 0.75rem;
+    }
+
+    .blog-footer {
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // Prefetch links on hover for instant navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const prefetched = new Set();
+    
+    // Prefetch on hover
+    document.addEventListener('mouseover', function(e) {
+      const link = e.target.closest('a');
+      if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+      
+      // Only prefetch same-origin links
+      if (new URL(link.href).origin !== location.origin) return;
+      
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = link.href;
+      prefetchLink.as = 'document';
+      document.head.appendChild(prefetchLink);
+      prefetched.add(link.href);
+    });
+  });
+  
+  // Create and register service worker inline
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      const swCode = `
+        const CACHE_NAME = 'ata-soy-v1';
+        const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+        
+        self.addEventListener('install', function(event) {
+          event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+        });
+        
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request).then(function(response) {
+              if (response) return response;
+              return fetch(event.request).then(function(response) {
+                if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                  return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                return response;
+              });
+            })
+          );
+        });
+        
+        self.addEventListener('activate', function(event) {
+          const cacheWhitelist = [CACHE_NAME];
+          event.waitUntil(
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(cacheNames.map(function(cacheName) {
+                if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+              }));
+            })
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(function() {});
+    });
+  }
+</script>
+</head>
+<body>
+
+
+<header class="blog-header">
+  <a href="../index.html" style="display: inline-block;">
+    <h1 class="site-name" style="margin: 0;">ata.soy</h1>
+  </a>
+</header>
+
+</p>
+<p><div style="text-align: center; padding: 2rem 1rem 3rem;">
+  <h1 style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; margin: 0 0 1.5rem 0; line-height: 1.2; padding: 0 0.5rem; word-wrap: break-word;">Simple Compiler Construction - md2jsx</h1>
+  <div style="display: flex; justify-content: center; gap: 1rem; font-size: clamp(0.75rem, 2vw, 0.9rem); opacity: 0.8; flex-wrap: wrap; padding: 0 1rem;">
+    <span>May 19, 2025</span>
+    <span>•</span>
+    <span>8 min read</span>
+    <span>•</span>
+    <span>Ata Atasoy</span>
+  </div>
+</div>
+
+</p>
+<p><div style="width: 100%; max-width: 800px; margin: 0 auto 2rem; padding: 0 1rem;">
+  <img src="../public/compiler-construction-md2jsx/banner.png" alt="Simple Compiler Construction - md2jsx" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; max-width: 100%; background: none !important;">
+</div>
+
+</p>
+<p><div class="blog-container" style="width: 100%; max-width: 800px;">
+<article class="blog-content">
+
+</p>
+<h2>Introduction</h2>
+<p>I had enough of vibe coding for around two months, so I wanted to take control back and learn more about computer science. So I built a simple Markdown to JSX compiler. I'm currently studying programming language fundamentals where we also go through this stuff! So it was the perfect time to get my hands dirty with it.</p>
+<p>So the challenge is:</p>
+<ul>
+<li>No AI (not even for general stuff)</li>
+<li>I can only use NVIM (took 4 hours to set up)</li>
+<li>I have to understand everything and write a blog post!</li>
+</ul>
+<p>Let's get started.</p>
+<h2>What is a compiler?</h2>
+<p>Software that translates files from one language to another (Markdown to JSX in our case). A typical example would be the Go compiler, where Go source code is compiled into executable machine code.</p>
+<p>It has several phases and components. Here are the main ones:</p>
+<p><strong>Lexer</strong> (scanner):</p>
+<ul>
+<li>Scans the file and generates tokens from the input</li>
+<li>Example: <code>let x = 5;</code> → <code>[&quot;let&quot;, &quot;x&quot;, &quot;=&quot;, &quot;5&quot;, &quot;;&quot;]</code></li>
+</ul>
+<p><strong>Parser</strong> (analyzer):</p>
+<ul>
+<li>This is where the AST (Abstract Syntax Tree) is built using grammar rules we covered in automata classes :D</li>
+<li>In my case, I don't need a detailed analyzer since my .md to .jsx implementation is fairly small.</li>
+</ul>
+<p><strong>Code Generation</strong>:</p>
+<ul>
+<li>Generates the actual code from the parsed AST</li>
+<li>The easiest part :D</li>
+</ul>
+<h2>md2jsx Outline</h2>
+<p>So here is the outline of the project:</p>
+<p>I have 3 main files:</p>
+<ul>
+<li><code>lexer.ts</code>: where I scan and generate the AST (has two parts: block and inline)</li>
+<li><code>generator.ts</code>: creates JSX from the AST</li>
+<li><code>main.ts</code>: glues everything together</li>
+</ul>
+<h2>Lexer</h2>
+<p>First of all, we should define our types:</p>
+<pre><code class="language-ts">type token =
+  | { type: &quot;header&quot;; level: number; content: string }
+  | { type: &quot;paragraph&quot;; content: inline_token[] };
+
+// inline tokens
+type inline_token =
+  | { type: &quot;bold&quot;; content: string }
+  | { type: &quot;highlight&quot;; content: string }
+  | { type: &quot;normal&quot;; content: string };
+
+// modifier dict
+const modifiers: { [key: string]: string } = {
+  &quot;*&quot;: &quot;bold&quot;,
+  &quot;=&quot;: &quot;highlight&quot;,
+};
+</code></pre>
+<p>For this small compiler, I will add support for headers and some inline modifiers like <code>*</code> and <code>=</code>.</p>
+<h3>Diving into the lexer function</h3>
+<p>As the name <em>scanner</em> suggests, first we should scan the file and start iterating through it. I decided to use the Deno runtime for this project!</p>
+<pre><code class="language-ts">const content = await Deno.readTextFile(&quot;example3.md&quot;);
+</code></pre>
+<p>I need some way to determine whether we're at a header or a paragraph. My idea was to check if the character is <code>#</code> - if so, it means we're at a header. But this implementation is prone to bugs and edge cases. For example, if <code>#</code> appears in a paragraph, our compiler could break :((</p>
+<pre><code class="language-ts">// get header level
+function get_header_level(index: number, content: string): number {
+  if (peek(index, content) != &quot;#&quot;) {
+    return 1;
+  }
+  return get_header_level(index + 1, content) + 1;
+}
+</code></pre>
+<p>Here is my cool recursive function to get the header level (<code>#</code> → 1, <code>##</code> → 2, <code>###</code> → 3). After getting the level of the header, we should <em>eat</em> (skip) those indexes so we don't repeat ourselves. For example:</p>
+<pre><code class="language-ts">const header_level = get_header_level(i, content); // calculate header level eg. # ## ###
+i += header_level; // jump so we don't check # again
+</code></pre>
+<p>If we're not at a header, it means we're scanning a paragraph. Here, we should also handle modifiers like <strong>bold</strong> and ==highlight==.</p>
+<pre><code class="language-ts">if (modifiers[char] != undefined) { 
+// checking if char is modifier
+        // check if normal content exists
+        if (paragraph_content != &quot;&quot;) {
+          let sub_inline_token: inline_token = {
+            type: &quot;normal&quot;,
+            content: paragraph_content,
+          };
+          inline_tokens.push(sub_inline_token);
+          paragraph_content = &quot;&quot;;
+        }
+        let sub_content_data = get_sub_content(i, content, char);
+        let sub_inline_token: inline_token = {
+          type: modifiers[char],
+          content: sub_content_data[0],
+        };
+        inline_tokens.push(sub_inline_token);
+        i += sub_content_data[1];
+
+        continue;
+      }
+
+      // normal text
+      paragraph_content += char;
+    }
+</code></pre>
+<h2>Generator</h2>
+<p><img src="../public/compiler-construction-md2jsx/ast-screenshot.png" alt="AST output screenshot"></p>
+<p>This is our AST output from the lexer. Now we need to generate JSX from it. The generator is pretty straightforward. I chose to use <code>map</code> methods to handle this, but there are other different and possibly easier ways as well.</p>
+<pre><code class="language-ts">export function generator(ast: Token[]): string {
+  const jsx = ast.map((node) =&gt; {
+    switch (node.type) {
+      case &quot;header&quot;:
+        return `&lt;h${node.level}&gt;${node.content}&lt;/h${node.level}&gt;`;
+
+      case &quot;paragraph&quot;:
+        const inner = node.content
+          .map((sub_node) =&gt; {
+            switch (sub_node.type) {
+              case &quot;normal&quot;:
+                return sub_node.content;
+              case &quot;bold&quot;:
+                return `&lt;strong&gt;${sub_node.content}&lt;/strong&gt;`;
+              case &quot;highlight&quot;:
+                return `&lt;mark&gt;${sub_node.content}&lt;/mark&gt;`;
+            }
+          })
+          .join(&quot;&quot;);
+        return `&lt;p&gt;${inner}&lt;/p&gt;`;
+    }
+  });
+
+  return `export default function Md2jsx(){
+      return (${jsx.join(&quot;\n&quot;)} )}`;
+}
+</code></pre>
+<h2>Summary</h2>
+<p>So, to build a compiler, you need to code a lexer, parser, and generator. If you are building a fairly simple compiler, you might not need a separate parser for syntax analysis and AST generation.</p>
+<p>In my project, I'm scanning (lexing) a <code>.md</code> file and generating <code>.jsx</code> from the AST it produces. It's kind of extensible with token types, and it can even support custom tokens and styles.</p>
+<p>My main motivation for this is that I write my blogs in Markdown, but I want to host them as static files in my Next.js app. So this is a great starting point for that!</p>
+<p>You can check out the whole project on my GitHub: <a href="https://github.com/atasoya/md2jsx-compiler">https://github.com/atasoya/md2jsx-compiler</a></p>
+<p></article>
+</div>
+</body>
+</html>
+
+</p>
+<p><footer class="blog-footer">
+  <p style="line-height: 1.6; word-wrap: break-word;">Have questions or feedback? Feel free to <a href="mailto:ataatasoy2013@gmail.com">email me</a> or connect with me on <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</footer>
+
+</p>

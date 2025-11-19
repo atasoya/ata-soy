@@ -1,0 +1,360 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - Ata Atasoy</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../nerdfolio.css" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    width: 100%;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content p {
+    margin: 1rem 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 8px;
+    display: block;
+    background: none !important;
+  }
+
+  .blog-content code {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .blog-content pre {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .blog-content pre code {
+    word-break: normal;
+  }
+
+  .blog-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content a {
+    text-decoration: underline;
+  }
+
+  .blog-header {
+    text-align: center;
+    padding: 3rem 1rem 1rem;
+  }
+
+  .blog-header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .blog-header .site-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .blog-footer {
+    border-top: 1px solid currentColor;
+    opacity: 0.9;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .blog-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    .blog-container {
+      padding: 0 1rem 2rem;
+      max-width: 100%;
+    }
+
+    .blog-content {
+      font-size: 0.95rem;
+    }
+
+    .blog-content h1 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .blog-content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content img {
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .blog-content code {
+      font-size: 0.85em;
+      padding: 0.15rem 0.3rem;
+    }
+
+    .blog-content pre {
+      padding: 0.75rem;
+      margin: 1rem -1rem;
+      border-radius: 0;
+    }
+
+    .blog-content table {
+      font-size: 0.85rem;
+    }
+
+    .blog-header {
+      padding: 1.5rem 1rem 0.5rem;
+    }
+
+    .blog-header .site-name {
+      font-size: 0.75rem;
+    }
+
+    .blog-footer {
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // Prefetch links on hover for instant navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const prefetched = new Set();
+    
+    // Prefetch on hover
+    document.addEventListener('mouseover', function(e) {
+      const link = e.target.closest('a');
+      if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+      
+      // Only prefetch same-origin links
+      if (new URL(link.href).origin !== location.origin) return;
+      
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = link.href;
+      prefetchLink.as = 'document';
+      document.head.appendChild(prefetchLink);
+      prefetched.add(link.href);
+    });
+  });
+  
+  // Create and register service worker inline
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      const swCode = `
+        const CACHE_NAME = 'ata-soy-v1';
+        const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+        
+        self.addEventListener('install', function(event) {
+          event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+        });
+        
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request).then(function(response) {
+              if (response) return response;
+              return fetch(event.request).then(function(response) {
+                if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                  return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                return response;
+              });
+            })
+          );
+        });
+        
+        self.addEventListener('activate', function(event) {
+          const cacheWhitelist = [CACHE_NAME];
+          event.waitUntil(
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(cacheNames.map(function(cacheName) {
+                if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+              }));
+            })
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(function() {});
+    });
+  }
+</script>
+</head>
+<body>
+
+
+<header class="blog-header">
+  <a href="../index.html" style="display: inline-block;">
+    <h1 class="site-name" style="margin: 0;">ata.soy</h1>
+  </a>
+</header>
+
+</p>
+<p><div style="text-align: center; padding: 2rem 1rem 3rem;">
+  <h1 style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; margin: 0 0 1.5rem 0; line-height: 1.2; padding: 0 0.5rem; word-wrap: break-word;">A Shallow Deep Dive on Mail Servers and DNS Records</h1>
+  <div style="display: flex; justify-content: center; gap: 1rem; font-size: clamp(0.75rem, 2vw, 0.9rem); opacity: 0.8; flex-wrap: wrap; padding: 0 1rem;">
+    <span>July 20, 2025</span>
+    <span>•</span>
+    <span>6 min read</span>
+    <span>•</span>
+    <span>Ata Atasoy</span>
+  </div>
+</div>
+
+</p>
+<p><div style="width: 100%; max-width: 800px; margin: 0 auto 2rem; padding: 0 1rem;">
+  <img src="../public/shallow-deep-dive-on-mail-servers-and-dns-records/banner.png" alt="A Shallow Deep Dive on Mail Servers and DNS Records" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; max-width: 100%; background: none !important;">
+</div>
+
+</p>
+<p><div class="blog-container" style="width: 100%; max-width: 800px;">
+<article class="blog-content">
+
+</p>
+<h2>Introduction</h2>
+<p>We use email daily, and it is the invisible but most important marketing and communication tool. We developers use email for several things, but we (at least me) don't understand how they actually work under the hood. We make some DNS changes for Resend to work but don't really check what they mean.</p>
+<p>My goal for this blog is to understand how mail servers and protocols work and try to explain them to you as well. So let's get started!</p>
+<h2>How Mail Servers Work</h2>
+<h3>Key Actors</h3>
+<h4>Mail User Agent (MUA)</h4>
+<p>Our email client like a web browser, Thunderbird, or something like Outlook. The application we use to read and compose emails.</p>
+<h4>Mail Transfer Agent (MTA)</h4>
+<p>This is software that transfers emails from sender to receiver using SMTP.</p>
+<h4>Mail Delivery Agent (MDA)</h4>
+<p>Postal mailbox equivalent for emails.</p>
+<h4>Mail Retrieval Agent (MRA)</h4>
+<p>Server component that allows user agents to retrieve messages using protocols like IMAP or POP3</p>
+<h3>Sending an Email</h3>
+<p>When the send button is clicked, your client (MUA) connects to the mail server (MTA) via SMTP. The MTA then looks at the recipient's email address to locate where to send the email next. It uses the domain part (after @) to query DNS for that domain's MX record, which contains the recipient's mail server's address. After the address is located, the MTA starts to do <em>store and forward</em> - they queue the messages and retry if the next hop is unreliable, which ensures reliable connection.</p>
+<h3>Key Protocols</h3>
+<ul>
+<li><strong>Simple Mail Transfer Protocol (SMTP):</strong> Used to send emails from client to server and between MTAs.</li>
+<li><strong>Extended Simple Mail Transfer Protocol (ESMTP):</strong> An extension of SMTP that supports additional features like authentication and attachments.</li>
+<li><strong>Post Office Protocol v3 (POP3):</strong> Downloads emails from the server to the client and usually deletes them from the server.</li>
+<li><strong>Internet Message Access Protocol (IMAP):</strong> Syncs emails between the server and client, keeping them both on client and server - a more modern approach.</li>
+</ul>
+<h2>DNS Setup for Email Service</h2>
+<p>This is the part I'm most interested in. I think we've all done this setup more than once in our lives, but most of us don't go one step further to actually understand these settings.</p>
+<h3>MX Records - Direct Mail to the Right Server</h3>
+<p>Mail Exchange records tell the world which mail server is responsible for receiving email for your domain.</p>
+<pre><code>example.com. 3600 IN MX 10 mail.example.com.
+</code></pre>
+<p>This means for domain <code>example.com</code>, the primary mail exchanger is <code>mail.example.com</code> with priority 10. The lower the priority, the higher the preference.</p>
+<h3>SPF - Sender Policy Framework</h3>
+<p>SPF is one of the primary email authentication methods. SPF allows the owner of the domain to specify which mail servers are authorized to send email on behalf of that domain.</p>
+<pre><code>example.com.   3600   IN   TXT   &quot;v=spf1 ip4:abc.d.efg.h include:_spf.google.com -all&quot;
+</code></pre>
+<p>This is a sample SPF record. This indicates that the domain authorizes a specific IPv4 address (abc.d.efg.h) and includes Google's mail servers as valid senders. <code>-all</code> means a hard fail, so if it fails, all emails are rejected automatically. <code>~all</code> means soft fail - if it fails, the mail gets marked as spam or suspicious.</p>
+<h3>DKIM – DomainKeys Identified Mail</h3>
+<p>Another method of email authentication. DKIM ties the email to the domain's identity by using cryptographic signatures like RSA.</p>
+<pre><code>default._domainkey.example.com.  3600 IN TXT &quot;v=DKIM1; k=rsa; p=MIIBIjANBgkqh...Ab (your public key) ...IDAQAB&quot;
+</code></pre>
+<p><code>p</code> is the public key, <code>v</code> is the version, and <code>k</code> is the key type.</p>
+<h3>DMARC – Domain-Based Message Authentication, Reporting &amp; Conformance</h3>
+<p>DMARC is another policy layer on top of SPF and DKIM. In simple terms, DMARC answers the question: <em>If an email claims to be from my domain, did it pass SPF and/or DKIM, and if not, what should the recipient server do with it?</em> When a receiver gets an email from <code>example.com</code>, it checks SPF and DKIM as usual.</p>
+<pre><code>_dmarc.example.com. 3600 IN TXT &quot;v=DMARC1; p=quarantine; rua=mailto:[email protected]; ruf=mailto:[email protected]; fo=1&quot;
+</code></pre>
+<p>Where <code>v</code> is the version, <code>rua</code> and <code>ruf</code> are the addresses where aggregate and forensic reports should be sent.</p>
+<h2>To Sum Up</h2>
+<p>I tried to <em>deep summarize</em> the email protocols, DNS settings, and provide simple but deeper knowledge about emails. Thanks for reading, and if you have any suggestions or if I made any mistakes, feel free to reach out!</p>
+<p></article>
+</div>
+</body>
+</html>
+
+</p>
+<p><footer class="blog-footer">
+  <p style="line-height: 1.6; word-wrap: break-word;">Have questions or feedback? Feel free to <a href="mailto:ataatasoy2013@gmail.com">email me</a> or connect with me on <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</footer>
+
+</p>

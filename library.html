@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library - Ata Atasoy</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: none;
+      color: inherit;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      column-gap: 3rem;
+      row-gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .library-card {
+      border: 2px dashed currentColor;
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      height: 144px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .library-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .library-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .library-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .library-link {
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .library-link:hover {
+      opacity: 1;
+    }
+
+    .library-footer {
+      margin-top: auto;
+      padding-top: 0.5rem;
+      border-top: 1px solid currentColor;
+    }
+
+    .library-author {
+      color: var(--yellow);
+      font-size: 0.75rem;
+      margin: 0.25rem 0;
+    }
+
+    .library-date {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin: 0.25rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .library-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      body {
+        padding: 1rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="nerdfolio.css">
+  <script>
+    // Prefetch links on hover for instant navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const prefetched = new Set();
+      
+      document.addEventListener('mouseover', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+        
+        if (new URL(link.href).origin !== location.origin) return;
+        
+        const prefetchLink = document.createElement('link');
+        prefetchLink.rel = 'prefetch';
+        prefetchLink.href = link.href;
+        prefetchLink.as = 'document';
+        document.head.appendChild(prefetchLink);
+        prefetched.add(link.href);
+      });
+    });
+    
+    // Create and register service worker inline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        const swCode = `
+          const CACHE_NAME = 'ata-soy-v1';
+          const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+          
+          self.addEventListener('install', function(event) {
+            event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+          });
+          
+          self.addEventListener('fetch', function(event) {
+            event.respondWith(
+              caches.match(event.request).then(function(response) {
+                if (response) return response;
+                return fetch(event.request).then(function(response) {
+                  if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                    return response;
+                  }
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                  return response;
+                });
+              })
+            );
+          });
+          
+          self.addEventListener('activate', function(event) {
+            const cacheWhitelist = [CACHE_NAME];
+            event.waitUntil(
+              caches.keys().then(function(cacheNames) {
+                return Promise.all(cacheNames.map(function(cacheName) {
+                  if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+                }));
+              })
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(function() {});
+      });
+    }
+  </script>
+</head>
+<body>
+  {% header %}
+  <div class="library-grid">
+    {{#each library}}
+    <div class="library-card">
+      <div class="library-header">
+        <h2 class="library-title">{{ title }}</h2>
+        <a href="{{ link }}" class="library-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="library-footer">
+        <p class="library-author">{{ author }}</p>
+        <p class="library-date">{{ dateRead }}</p>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</body>
+</html>
+

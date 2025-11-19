@@ -1,0 +1,365 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - Ata Atasoy</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../nerdfolio.css" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    width: 100%;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content p {
+    margin: 1rem 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 8px;
+    display: block;
+    background: none !important;
+  }
+
+  .blog-content code {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .blog-content pre {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .blog-content pre code {
+    word-break: normal;
+  }
+
+  .blog-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content a {
+    text-decoration: underline;
+  }
+
+  .blog-header {
+    text-align: center;
+    padding: 3rem 1rem 1rem;
+  }
+
+  .blog-header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .blog-header .site-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .blog-footer {
+    border-top: 1px solid currentColor;
+    opacity: 0.9;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .blog-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    .blog-container {
+      padding: 0 1rem 2rem;
+      max-width: 100%;
+    }
+
+    .blog-content {
+      font-size: 0.95rem;
+    }
+
+    .blog-content h1 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .blog-content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content img {
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .blog-content code {
+      font-size: 0.85em;
+      padding: 0.15rem 0.3rem;
+    }
+
+    .blog-content pre {
+      padding: 0.75rem;
+      margin: 1rem -1rem;
+      border-radius: 0;
+    }
+
+    .blog-content table {
+      font-size: 0.85rem;
+    }
+
+    .blog-header {
+      padding: 1.5rem 1rem 0.5rem;
+    }
+
+    .blog-header .site-name {
+      font-size: 0.75rem;
+    }
+
+    .blog-footer {
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // Prefetch links on hover for instant navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const prefetched = new Set();
+    
+    // Prefetch on hover
+    document.addEventListener('mouseover', function(e) {
+      const link = e.target.closest('a');
+      if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+      
+      // Only prefetch same-origin links
+      if (new URL(link.href).origin !== location.origin) return;
+      
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = link.href;
+      prefetchLink.as = 'document';
+      document.head.appendChild(prefetchLink);
+      prefetched.add(link.href);
+    });
+  });
+  
+  // Create and register service worker inline
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      const swCode = `
+        const CACHE_NAME = 'ata-soy-v1';
+        const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+        
+        self.addEventListener('install', function(event) {
+          event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+        });
+        
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request).then(function(response) {
+              if (response) return response;
+              return fetch(event.request).then(function(response) {
+                if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                  return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                return response;
+              });
+            })
+          );
+        });
+        
+        self.addEventListener('activate', function(event) {
+          const cacheWhitelist = [CACHE_NAME];
+          event.waitUntil(
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(cacheNames.map(function(cacheName) {
+                if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+              }));
+            })
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(function() {});
+    });
+  }
+</script>
+</head>
+<body>
+
+
+<header class="blog-header">
+  <a href="../index.html" style="display: inline-block;">
+    <h1 class="site-name" style="margin: 0;">ata.soy</h1>
+  </a>
+</header>
+
+</p>
+<p><div style="text-align: center; padding: 2rem 1rem 3rem;">
+  <h1 style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; margin: 0 0 1.5rem 0; line-height: 1.2; padding: 0 0.5rem; word-wrap: break-word;">How I Got a 4.0 GPA While Still Touching Grass</h1>
+  <div style="display: flex; justify-content: center; gap: 1rem; font-size: clamp(0.75rem, 2vw, 0.9rem); opacity: 0.8; flex-wrap: wrap; padding: 0 1rem;">
+    <span>August 15, 2025</span>
+    <span>•</span>
+    <span>8 min read</span>
+    <span>•</span>
+    <span>Ata Atasoy</span>
+  </div>
+</div>
+
+</p>
+<p><div style="width: 100%; max-width: 800px; margin: 0 auto 2rem; padding: 0 1rem;">
+  <img src="../public/how-i-got-a-4-gpa-while-still-touching-grass/banner.png" alt="How I Got a 4.0 GPA While Still Touching Grass" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; max-width: 100%; background: none !important;">
+</div>
+
+</p>
+<p><div class="blog-container" style="width: 100%; max-width: 800px;">
+<article class="blog-content">
+
+</p>
+<h2>Introduction</h2>
+<p>Everyone around you says academic performance doesn't matter. They'll tell you companies don't look for straight A students, that you don't need to study too hard, and that the only thing that matters is whether you can do the job. But what they never understand is that you can actually do both, and it's definitely better than doing only one of them.</p>
+<p>I didn't go to one of the toughest colleges, but I achieved a 4.00 GPA while also building revenue-generating side projects, going to the gym, and having a girlfriend at the same time.</p>
+<p>Academic performance shows that you're committed to what you're studying. It proves that you can sit down, concentrate, and apply what you've learned, and that makes it pretty important.</p>
+<p>In this blog post, I'll explain how I managed to achieve high GPAs like 4.00, 3.93, 3.80, and more, all while balancing other things in life. Hopefully, it can help you too.</p>
+<h2>Never cheat</h2>
+<p>Good students never cheat, so if you want to be a truly good student, don't cheat. It's simply not worth the risk. If you really care about your studies, put that energy into working harder instead. Cheating doesn't just hurt others; it hurts you too. It can damage your integrity, your confidence, and it may haunt you throughout your entire academic journey.</p>
+<h2>Use class times effectively</h2>
+<p>You might be surprised, but my friends with high GPAs (and myself included) rarely pay full attention to the professor during lectures. Most of the time, you can't choose your professor, and if their teaching style doesn't suit you, it might not be very useful. But don't get me wrong - I always attended classes and used that time productively. I'd code, read, solve practice questions, or even review the course material while sitting there.</p>
+<h2>Never miss class</h2>
+<p>I almost always went to class, even to the ones where I barely paid attention (which was most of them). Showing up consistently makes the professor recognize your name and face. That recognition is actually really important, because when it comes to grading, basic human nature kicks in - they're more likely to go a little easier on someone they know.</p>
+<h2>Have good student friends</h2>
+<p>When you go to all classes, it will be easy to meet and get close with them. They will be the key to your success. They might find past questions you can never access. You will be grouped with them in projects and so on. Having good student friends will automatically boost your GPA without doing too much. Remember what they say: <em>If you are in a group of 4 idiots, you will be the 5th one.</em></p>
+<h2>Help your friends</h2>
+<p>They are not your enemies - help them. But don't mix this with spoon-feeding; if someone is trying to use you, recognize it and act accordingly. Helping friends is good because if they are good, you will also be good. Help and grow together. Share your notes and materials so they will also share with you.</p>
+<h2>Do not race with your friends</h2>
+<p>It is you vs. you. Just focus on beating yourself, not others.</p>
+<h2>Do not waste your time taking notes</h2>
+<p>If you spend too much time taking notes and never look back at them, or only check once, just don't take notes - take pictures of the whiteboard instead. Take notes on how to solve exam questions, because getting a high grade is mostly about solving questions correctly.</p>
+<h2>Know your professor</h2>
+<p>Know the style of your professor. How they ask questions and what type of questions they ask.</p>
+<h2>Know what is needed to get a high grade</h2>
+<p>Unfortunately, some classes are just about solving questions correctly and not about how well you know the subject. Know what is needed for the course and play accordingly.</p>
+<h2>Know how much you need to study for the course</h2>
+<p>All courses are not the same, and all students are different. Everyone and every course has different needs, and you should know yourself. Know how long you need to study to get an A and study accordingly.</p>
+<h2>0-60</h2>
+<p>So if you don't listen in class like me, basically you are at 0 when you start to study. You want to get from 0–60 as fast as possible. You need to skim lecture notes and questions so you have an idea of how to study and some basic knowledge. AI is really good for that. Use AI to get basic knowledge really fast. <a href="https://fourgpa.com">fourgpa.com</a></p>
+<h2>60-80</h2>
+<p>This is the range that separates most of the students, and it is not actually that hard. Just make sure you can solve exercise questions and don't leave anything misunderstood.</p>
+<h2>80-100</h2>
+<p>This separates good students from the top students, and this range is the hardest to move up in. To get into this range, you must solve all the questions multiple times. Use AI-generated questions. Understand all the topics deeply. Spend <strong>enough</strong> time to make sure you can solve all the questions. Here, details matter a lot. You should know the details of the subject so you can solve unpredictable questions.</p>
+<p>You will never feel that it is enough until you enter the exam. Just keep studying and mastering the subject. Make sure that you understand and know everything. When I say understand, I really mean it. Understand how things work under the hood.</p>
+<h2>Solve questions</h2>
+<p>Most students just read the questions and try to understand, but things change when you actually try to solve them. So just sit down and solve.</p>
+<h2>Solve more questions</h2>
+<p>This is the most important part - just find questions from books, YouTube, and AI, and solve them multiple times until you actually master the topic.</p>
+<h2>Good student checklist</h2>
+<p>Here is what I think an A student must check before the exam:</p>
+<ul>
+<li>[ ] Skim all the lecture notes once</li>
+<li>[ ] Use AI to skim all the lecture notes once</li>
+<li>[ ] Solve all the questions at least 3 times</li>
+<li>[ ] Make sure that if questions are the same with old ones you can get 100</li>
+<li>[ ] Take notes on how to solve certain types of questions</li>
+<li>[ ] Get good sleep before the exam</li>
+<li>[ ] Drink coffee before the exam</li>
+</ul>
+<h2>Zeitnot</h2>
+<p>If you have time pressure for the exam and don't have time to check all the boxes, just get to the 0–60 range as fast as you can and spend your time mastering questions.</p>
+<h2>Summary</h2>
+<p>These were the things I did that worked for my college and classes. I hope this helps you increase your CGPA and get a 4.00 GPA. To sum up: just get good sleep and study until it is enough.</p>
+<p></article>
+</div>
+</body>
+</html>
+
+</p>
+<p><footer class="blog-footer">
+  <p style="line-height: 1.6; word-wrap: break-word;">Have questions or feedback? Feel free to <a href="mailto:ataatasoy2013@gmail.com">email me</a> or connect with me on <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</footer>
+
+</p>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Ata Atasoy</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: none;
+      color: inherit;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      column-gap: 3rem;
+      row-gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .project-card {
+      border: 2px dashed currentColor;
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .project-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+    }
+
+    .project-link {
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .project-link:hover {
+      opacity: 1;
+    }
+
+    .project-description {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .project-tag {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+
+    .project-cta {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-date {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      body {
+        padding: 1rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="nerdfolio.css">
+  <script>
+    // Prefetch links on hover for instant navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const prefetched = new Set();
+      
+      document.addEventListener('mouseover', function(e) {
+        const link = e.target.closest('a');
+        if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+        
+        if (new URL(link.href).origin !== location.origin) return;
+        
+        const prefetchLink = document.createElement('link');
+        prefetchLink.rel = 'prefetch';
+        prefetchLink.href = link.href;
+        prefetchLink.as = 'document';
+        document.head.appendChild(prefetchLink);
+        prefetched.add(link.href);
+      });
+    });
+    
+    // Create and register service worker inline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        const swCode = `
+          const CACHE_NAME = 'ata-soy-v1';
+          const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+          
+          self.addEventListener('install', function(event) {
+            event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+          });
+          
+          self.addEventListener('fetch', function(event) {
+            event.respondWith(
+              caches.match(event.request).then(function(response) {
+                if (response) return response;
+                return fetch(event.request).then(function(response) {
+                  if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                    return response;
+                  }
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                  return response;
+                });
+              })
+            );
+          });
+          
+          self.addEventListener('activate', function(event) {
+            const cacheWhitelist = [CACHE_NAME];
+            event.waitUntil(
+              caches.keys().then(function(cacheNames) {
+                return Promise.all(cacheNames.map(function(cacheName) {
+                  if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+                }));
+              })
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(function() {});
+      });
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html" style="text-decoration: none; color: inherit;">ata.soy</a></h1>
+  </header>
+
+  <div class="projects-grid">
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">TicTacToe AI</h2>
+        <a href="https://github.com/atasoya/tictactoeai" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Small implementation of minimax algorithm for tic-tac-toe</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript, React, Vite</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="tictactoe.ata.soy" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">20-09-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">VaultEnv</h2>
+        <a href="https://github.com/atasoya/vaultenv" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Secure local env management app</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript, React, Electron, Sqlite</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/vaultenv" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">25-08-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Komutan</h2>
+        <a href="https://github.com/atasoya/komutan" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">A CLI tool for creating and managing CommanderJS CLI tools inspired by cobra-cli</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/komutan" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">18-08-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">CLI Chess Puzzle</h2>
+        <a href="https://github.com/atasoya/cli-chess-puzzle" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Command line tool to fetch chess puzzles from Lichess and Chess.com.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/cli-chess-puzzle" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">18-08-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">CoolBg</h2>
+        <a href="https://coolbg.ata.soy/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Create cool backgrounds for your images with ease.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript, Javascript, Vite</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/coolbg" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">16-08-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">VCC</h2>
+        <a href="https://github.com/atasoya/vcc" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">A fast, lightweight CLI tool for managing Neovim colorschemes</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Go</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/vcc" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">02-08-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">SQLCIK</h2>
+        <a href="https://github.com/atasoya/sqlcik" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Simple SQLite clone written in typescript.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/sqlcik" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">11-07-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">FourGPA</h2>
+        <a href="https://www.fourgpa.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">AI Powered study tools for students.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, PostgreSQL</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.fourgpa.com/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">01-06-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">md2jsx Compiler</h2>
+        <a href="https://github.com/atasoya/md2jsx-compiler" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Simple markdown to jsx compiler written in typescript and deno.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Typescript</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/md2jsx-compiler" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">19-05-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Planti</h2>
+        <a href="https://github.com/atasoya/planti" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Developer-First Plant Management System i build in 2 days for interview assignment.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, Express, PostgreSQL, Docker</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/planti" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">30-04-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">LansmanTR</h2>
+        <a href="https://www.lansmantr.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Product luch for Türkiye market.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, PostgreSQL</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://x.com/AtaAtasoy11/status/1910958566053470679" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">17-03-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Chess Street</h2>
+        <a href="https://www.chesstreet.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">3rd chess related app after i said if was gonne be last one. Had 500 users in 3 days because it went viral on lichess and my blog post be on the first page of lichess!</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB, Firebase</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://lichess.org/@/genialnost/blog/i-made-a-social-platform-for-chess-lovers/Xz3WCcJ2" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">25-02-2025</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Is It Destined</h2>
+        <a href="https://www.isitdestined.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Fun activity website did to find out if it is destined for you. It as active every year on january.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.isitdestined.com/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">30-12-2024</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Sevgilime Website</h2>
+        <a href="https://www.sevgilime.website/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">My second startup (website builder for lovers)! Failed better and learned more about advertising and marketing.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.sevgilime.website/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">10-12-2024</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Polimi Guide</h2>
+        <a href="https://www.polimi.guide/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Did this to include in my motivation letter for my masters degree. I can say it worked :D</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.polimi.guide/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">27-11-2024</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Random Certificate</h2>
+        <a href="https://www.randomcertificate.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Random certificate generator made in one day to make fun of random certificate spammers on linkedin :D.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.randomcertificate.com/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">24-11-2024</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Eksik Oyuncu (Missing Player)</h2>
+        <a href="https://www.eksikoyuncu.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">I did this website after reading million dolar weekend. Tried if there was a deman to make bigger app but there wasn't. Nort Cyprus market is small.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.eksikoyuncu.com/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">17-09-2024</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Emu Guide</h2>
+        <a href="https://www.emu.guide/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">App i did in 2 days as a guide for my university. It has constant 100 visitors/month until this day. Currently managing this as open source project.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/emu-guide" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">10-09-2024</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Duble Piyon (Double Pawn)</h2>
+        <a href="https://dublepiyon.atasoy.dev" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Turkish chess standings website where i made in one day as a proof of concept. But traffic never grew.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/duble-piyon" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">04-09-2023</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Guess The Chess Player</h2>
+        <a href="https://www.guessthechessplayer.com/" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">First time i taste the real online users on my website. I still remember looking at the google analics map excitedly.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, Vercel</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://www.guessthechessplayer.com/" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">17-08-2023</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Leave a Quote</h2>
+        <a href="https://github.com/atasoya/leave-a-quote" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Forum like website that i made for my friends to leave quotes. Did that during my summer training to learn Laravel and PHP.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Laravel, MySQL</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/leave-a-quote" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">06-08-2023</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Simple CMD Games</h2>
+        <a href="https://github.com/atasoya/Simple-Cmd-Games" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Simple CMD games that i made for fun to play on my mac. Also it was my first time using GO!</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Go</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/Simple-Cmd-Games" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">26-12-2023</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Twitter Chess Bot</h2>
+        <a href="https://github.com/atasoya/lichess-bot" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">X(twitter) bot that was tweeting hourly chess puzzles. It was fun to see real people following it.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://x.com/hourlychessbot" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">28-11-2023</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Lichess Bot</h2>
+        <a href="https://github.com/atasoya/lichess-bot" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">My first ever open source contribution. I was already using the bot, so i thought i should contribute!. I added /profile command.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/lichess-bot" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">02-06-2022</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Short Term Memory Trainer App</h2>
+        <a href="https://github.com/atasoya/My-Chess-Trainer" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Second published mobile app.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Flutter</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/My-Chess-Trainer" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">06-09-2021</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">My Chess Trainer App</h2>
+        <a href="https://github.com/atasoya/My-Chess-Trainer" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">My first published mobile app! Also i got more than 100 downloads. It was a great milestone for me.</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Flutter</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/My-Chess-Trainer" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">06-09-2021</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Convo Master Discord Bot</h2>
+        <a href="https://github.com/atasoya/convo-master-discord-bot" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">A discord bot that helps your bad conversation skills. He had more than 100 servers and helped me get verified developer badge on discord</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/convo-master-discord-bot" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">17-06-2021</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Basic Linear Equation Solver</h2>
+        <a href="https://github.com/atasoya/Basic-Linear-Equation-Solver" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">My first project that made me fall in love with coding. I learned so much from it (there was no AI back then), and Repl.it was just a simple text editor</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://github.com/atasoya/Basic-Linear-Equation-Solver" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">11-08-2020</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-header">
+        <h2 class="project-title">Chess Elevate</h2>
+        <a href="https://chesselevate.com" class="project-link" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="project-description">Chess platform for chess coaches to help them manage their students and improve their skills. Also the project get me in the entrepreneurship world where i failed miserably</p>
+      
+      <div class="project-tags">
+        <span class="project-tag">Next.js, MongoDB</span>
+      </div>
+      
+      <div class="project-footer">
+        <a href="https://youtu.be/-VTd3M9bElw" class="project-cta" target="_blank" rel="noopener">Check it out</a>
+        <span class="project-date">23-03-2024</span>
+      </div>
+    </div>
+    
+  </div>
+</body>
+</html>
+

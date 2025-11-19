@@ -1,0 +1,384 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - Ata Atasoy</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../nerdfolio.css" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    width: 100%;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.75rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.9;
+  }
+
+  .blog-content p {
+    margin: 1rem 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 8px;
+    display: block;
+    background: none !important;
+  }
+
+  .blog-content code {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    word-break: break-word;
+  }
+
+  .blog-content pre {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .blog-content pre code {
+    word-break: normal;
+  }
+
+  .blog-content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content a {
+    text-decoration: underline;
+  }
+
+  .blog-header {
+    text-align: center;
+    padding: 3rem 1rem 1rem;
+  }
+
+  .blog-header a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .blog-header .site-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .blog-footer {
+    border-top: 1px solid currentColor;
+    opacity: 0.9;
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .blog-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+
+    .blog-container {
+      padding: 0 1rem 2rem;
+      max-width: 100%;
+    }
+
+    .blog-content {
+      font-size: 0.95rem;
+    }
+
+    .blog-content h1 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content h2 {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+
+    .blog-content h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-content img {
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .blog-content code {
+      font-size: 0.85em;
+      padding: 0.15rem 0.3rem;
+    }
+
+    .blog-content pre {
+      padding: 0.75rem;
+      margin: 1rem -1rem;
+      border-radius: 0;
+    }
+
+    .blog-content table {
+      font-size: 0.85rem;
+    }
+
+    .blog-header {
+      padding: 1.5rem 1rem 0.5rem;
+    }
+
+    .blog-header .site-name {
+      font-size: 0.75rem;
+    }
+
+    .blog-footer {
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // Prefetch links on hover for instant navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const prefetched = new Set();
+    
+    // Prefetch on hover
+    document.addEventListener('mouseover', function(e) {
+      const link = e.target.closest('a');
+      if (!link || !link.href || link.href.startsWith('#') || prefetched.has(link.href)) return;
+      
+      // Only prefetch same-origin links
+      if (new URL(link.href).origin !== location.origin) return;
+      
+      const prefetchLink = document.createElement('link');
+      prefetchLink.rel = 'prefetch';
+      prefetchLink.href = link.href;
+      prefetchLink.as = 'document';
+      document.head.appendChild(prefetchLink);
+      prefetched.add(link.href);
+    });
+  });
+  
+  // Create and register service worker inline
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      const swCode = `
+        const CACHE_NAME = 'ata-soy-v1';
+        const urlsToCache = ['/', '/index.html', '/blogs.html', '/projects.html', '/library.html', '/nerdfolio.css'];
+        
+        self.addEventListener('install', function(event) {
+          event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(urlsToCache); }));
+        });
+        
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request).then(function(response) {
+              if (response) return response;
+              return fetch(event.request).then(function(response) {
+                if (!response || response.status !== 200 || response.type !== 'basic' || event.request.method !== 'GET') {
+                  return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, responseToCache); });
+                return response;
+              });
+            })
+          );
+        });
+        
+        self.addEventListener('activate', function(event) {
+          const cacheWhitelist = [CACHE_NAME];
+          event.waitUntil(
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(cacheNames.map(function(cacheName) {
+                if (cacheWhitelist.indexOf(cacheName) === -1) return caches.delete(cacheName);
+              }));
+            })
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(function() {});
+    });
+  }
+</script>
+</head>
+<body>
+
+
+<header class="blog-header">
+  <a href="../index.html" style="display: inline-block;">
+    <h1 class="site-name" style="margin: 0;">ata.soy</h1>
+  </a>
+</header>
+
+</p>
+<p><div style="text-align: center; padding: 2rem 1rem 3rem;">
+  <h1 style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 700; margin: 0 0 1.5rem 0; line-height: 1.2; padding: 0 0.5rem; word-wrap: break-word;">Binary Search Algorithm: The Complete Visual Guide</h1>
+  <div style="display: flex; justify-content: center; gap: 1rem; font-size: clamp(0.75rem, 2vw, 0.9rem); opacity: 0.8; flex-wrap: wrap; padding: 0 1rem;">
+    <span>May 4, 2025</span>
+    <span>•</span>
+    <span>5 min read</span>
+    <span>•</span>
+    <span>Ata Atasoy</span>
+  </div>
+</div>
+
+</p>
+<p><div style="width: 100%; max-width: 800px; margin: 0 auto 2rem; padding: 0 1rem;">
+  <img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/banner.png" alt="Binary Search Algorithm: The Complete Visual Guide" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; max-width: 100%; background: none !important;">
+</div>
+
+</p>
+<p><div class="blog-container" style="width: 100%; max-width: 800px;">
+<article class="blog-content">
+
+</p>
+<h2>Introduction</h2>
+<p>Binary search is one of the fundamental sorting algorithms and a building block for more complex ones. It can be tricky to understand at first, as most of us just learn it for the sake of some college assignment. But i believe that to truly master our craft, we need a bit more than that.</p>
+<p>I remember my high school days when we learned binary search and I was really good at it. But honestly, I was only good at memorizing where to put the <code>-1</code> and <code>+1</code>, I didn’t actually understand anything :D</p>
+<p>So, it’s time to change that. Let’s start!</p>
+<h2>Understanding the Search Range</h2>
+<p>There are two different methods for binary search. One includes both <code>lo</code> and <code>hi</code> in the search scope, denoted as <code>[lo, hi]</code>. As we learned in calculus, this means both <code>lo</code> and <code>hi</code> are included in the range.</p>
+<p>The other method, which I will cover now, is <code>[lo, hi)</code>. This means <code>lo</code> is included but <code>hi</code> is not. It is effectively the same as <code>[lo, hi - 1]</code>, but writing <code>-1</code> everywhere is a bit of a hassle, so we simply denote it as <code>[lo, hi)</code>.</p>
+<p>Each method requires a different loop condition and range handling. In my opinion, <code>[lo, hi)</code> makes more sense as it works nicely with length functions in most programming languages. For example, if the last index is 9, the length is 10, so index 10 won’t be included. This pairs well with how length based loops typically work!</p>
+<h2>Overview</h2>
+<p><img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/overwiev.png" alt="Overview"></p>
+<p>It is actually a very simple and short algorithm, with just one loop and a few <code>if</code> conditions. Without wasting too much time, let's move on to the algorithm.</p>
+<h2>Initial Setup</h2>
+<p><img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/setup.png" alt="Setup"></p>
+<p>To begin with, I’ve created a sample array: <code>array = [2,6,14,29,37,43,56,65,71,88,97]</code> and we have <code>target = 88</code>.
+As the name suggests, we’ll divide the array in half each time the middle element is not our target.  ==Don’t forget that binary search assumes the array is already sorted.==</p>
+<p>So, <code>lo</code> (lower bound) is <code>0</code> when we start that part is pretty straightforward.<br>
+<code>hi</code> (higher bound) is set to the length of the array, but notice that it doesn't point to any actual value in the array.</p>
+<p>*Recall that we are using the <code>[lo, hi)</code> range as our search scope, which makes even more sense now when we visualize it!</p>
+<h2>Mid Point Formula</h2>
+<p>$mid = lo + \text{floor}\left(\dfrac{hi - lo}{2}\right)$</p>
+<p>Don’t be scared of this formula — it’s actually pretty straightforward.<br>
+You’ll understand it better as we use it in the sample algorithm.</p>
+<p>Just make sure not to forget the <code>floor</code> function, since sometimes we need to get the lower bound when the result is not a whole number.</p>
+<h1>Calculate Value &amp; Mid</h1>
+<p>Simply apply our formula to get the midpoint and the value to compare.
+<img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/calculation1.png" alt="Calculation 1">
+<img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/calculate2.png" alt="Calculation 2"></p>
+<p>When the target is larger than our calculated value, it means the target is located above the midpoint. So, we update our search space to <code>[mid + 1, hi)</code>.</p>
+<p>The <code>+1</code> logic is actually pretty simple!  Since we already checked if <code>array[mid]</code> is equal to the target, and it wasn't, we know the target can't be at <code>mid</code>. Therefore, we don't include it in the next search scope.</p>
+<h1>Enter the Loop</h1>
+<p><img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/loop1.png" alt="Loop 1">
+calculate again
+<img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/loop2.png" alt="Loop 2">
+Now it's our first time encountering <code>target &lt; value</code>.<br>
+If the target is smaller than the value at <code>mid</code>, it means the target is located below the midpoint.<br>
+So, we set our new <code>hi</code> as the midpoint.</p>
+<p>A common question that arises is: why don't we use <code>-1</code> or <code>+1</code> here?</p>
+<p>Well, we already know that <code>array[mid]</code> is not our target.<br>
+And remember  our scope is <code>[lo, hi)</code>, which means <code>hi</code> is <strong>not included</strong> in the search range.<br>
+So when we do <code>hi = mid</code>, it automatically excludes the current <code>mid</code>, but still includes <code>mid - 1</code> and everything before it.</p>
+<p><strong>SIMPLE!</strong></p>
+<h1>And Finally</h1>
+<p><img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/final.png" alt="Final"></p>
+<p>:))) Now, <code>value === target</code>, which means we've found the target, and we can return its index!</p>
+<p>We usually return <code>-1</code> if the number is <strong>not</strong> in the array.<br>
+This can be determined if the condition <code>lo &gt;= hi</code> becomes true meaning our search space is empty.</p>
+<h2>Running Time</h2>
+<p><strong>Quick answer:</strong> O(log n)<br>
+(based on logarithm with base 2)</p>
+<p>But let’s prove it :))</p>
+<p>Let’s say we have <code>n</code> elements in the array.</p>
+<p>| Step | Elements Remaining |
+|------|---------------------|
+| 1    | n                   |
+| 2    | n / 2               |
+| 3    | n / 4               |
+| 4    | n / 8               |
+| ...  | ...                 |
+| k    | n / 2^k             |</p>
+<p>In the worst case, the algorithm stops when there’s only <strong>1 element</strong> left in the search range.<br>
+So how many times can we divide the array in half until we reach 1?</p>
+<p>We set up the equation:
+n / 2^k = 1   =&gt; 2^k = n   =&gt; k = log(n)</p>
+<p>So, the worst-case time complexity of binary search is: <strong>O(log n)</strong></p>
+<h1>Your Turn</h1>
+<p><img src="../public/my-binary-search-notes-only-explanation-you-would-ever-need/carbon%20(2).png" alt="Python Solution"></p>
+<p>Here is my Python solution for you to double check your understanding.<br>
+But I <strong>highly recommend</strong> you write it yourself  even if you think you understand everything well.</p>
+<p>Here's the LeetCode link for practice:  <a href="https://leetcode.com/problems/binary-search/">Binary Search – LeetCode</a></p>
+<p>Thanks for reading all the way through! Feel free to reach out if you found this helpful :D</p>
+<p></article>
+</div>
+</body>
+</html>
+
+</p>
+<p><footer class="blog-footer">
+  <p style="line-height: 1.6; word-wrap: break-word;">Have questions or feedback? Feel free to <a href="mailto:ataatasoy2013@gmail.com">email me</a> or connect with me on <a href="https://www.linkedin.com/in/ata-atasoy-67b496209/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</footer>
+
+</p>
