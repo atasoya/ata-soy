@@ -14,9 +14,49 @@
     "location": "Milan, Italy",
     "interests": "Engineering, Chess, Reading, Fitness, Health, Entrepreneurship",
     "currently": "I don't know what I am doing",
-    "latestProject": "CoolBg - Create cool backgrounds for your images with ease.",
-    "latestBlog": "How I Got a 4.0 GPA While Still Touching Grass",
+    "latestProject": "LinkedIn Content Machine - A TUI for boosting engagement on LinkedIn",
+    "latestBlog": "How to Make CLI Tools in TypeScript with Komutan",
     "projects": [
+        {
+            "title": "LinkedIn Content Machine",
+            "description": "A TUI built with openTUI for boosting engagement on LinkedIn",
+            "technologies": "Typescript, openTUI, Bun",
+            "websiteUrl": "https://github.com/atasoya/linkedin-content-machine",
+            "link": "https://github.com/atasoya/linkedin-content-machine",
+            "date": "25-11-2025"
+        },
+        {
+            "title": "ata-soy",
+            "description": "My personal website made with nerdfolio.",
+            "technologies": "HTML, CSS, JS, Nerdfolio",
+            "websiteUrl": "https://github.com/atasoya/ata-soy",
+            "link": "https://www.ata.soy/",
+            "date": "18-11-2025"
+        },
+        {
+            "title": "Nerdfolio",
+            "description": "Static site generator framework tailored for building nerdish personal websites.",
+            "technologies": "Go",
+            "websiteUrl": "https://github.com/atasoya/nerdfolio",
+            "link": "https://github.com/atasoya/nerdfolio",
+            "date": "02-11-2025"
+        },
+        {
+            "title": "Genetic Algorithm Implementation",
+            "description": "My notes and implementation of paper 'An introduction to genetic algorithms' by Prof. Scott Thede.",
+            "technologies": "Typescript",
+            "websiteUrl": "https://github.com/atasoya/genetic-algorithm-notes-and-implementation",
+            "link": "https://github.com/atasoya/genetic-algorithm-notes-and-implementation",
+            "date": "14-10-2025"
+        },
+        {
+            "title": "TicTacToe AI",
+            "description": "Small implementation of A* algorithm for finding shortest path in a maze",
+            "technologies": "Typescript, React, Vite",
+            "websiteUrl": "https://github.com/atasoya/mazesolver",
+            "link": "mazesolver.ata.soy",
+            "date": "28-09-2025"
+        },
         {
             "title": "TicTacToe AI",
             "description": "Small implementation of minimax algorithm for tic-tac-toe",
